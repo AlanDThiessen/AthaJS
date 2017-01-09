@@ -5,7 +5,7 @@
   "public": "../public/",
   "auth": {
     "token": {
-      "secret": "NEED A SECRET HERE!!!"
+      "secret": "P3Q0OBY3AauFXJMCdNQRJBnxVqG3kdUfXpAUsdTLQ4T8jzb1Pif4ZqEKdH3MwU54ntf7V4o4T++tAC0rRpNk/w=="
     },
     "local": {},
     "google": {
