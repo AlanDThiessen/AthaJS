@@ -1,0 +1,19 @@
+
+body {
+    padding: 1em;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+    border: 1px solid black;
+}
+
+caption {
+    text-align: left;
+    caption-side: bottom;
+    font-weight: bold;
+}
