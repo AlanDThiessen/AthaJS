@@ -66,14 +66,19 @@
     function LightsCtrl($scope, roomSvc, lightSvc) {
         var lightsCtrl = this;
         lightsCtrl.lights = [];
+        lightsCtrl.removeLight = RemoveLight;
         var rooms = {};
 
-        roomSvc.find({
-            $limit: 100
-        }).then(OnRoomsUpdate, OnError);
+        UpdateRooms();
 
         return lightsCtrl;
 
+
+        function UpdateRooms() {
+            roomSvc.find({
+                $limit: 100
+            }).then(OnRoomsUpdate, OnError);
+        }
 
         function OnRoomsUpdate(data) {
             rooms = [];
@@ -82,6 +87,11 @@
                 rooms[room._id] = room.name;
             });
 
+            UpdateLights();
+        }
+
+
+        function UpdateLights() {
             lightSvc.find({
                 query: {
                     $limit: 100,
@@ -89,7 +99,7 @@
                         'address': 1
                     }
                 }
-                }).then(OnLightsUpdate, OnError);
+            }).then(OnLightsUpdate, OnError);
         }
 
 
@@ -102,6 +112,11 @@
             });
 
             $scope.$apply();
+        }
+
+
+        function RemoveLight(id) {
+            lightSvc.remove(id).then(UpdateLights, OnError);
         }
 
 

@@ -29,6 +29,7 @@
                 <th>Dimmable</th>
                 <th>Level</th>
                 <th>Status</th>
+                <th></th>
             </tr>
             <tr ng-repeat="light in lights.lights">
                 <td>{{light.roomName}}</td>
@@ -37,6 +38,7 @@
                 <td>{{light.isDimmable}}</td>
                 <td>{{light.level}}</td>
                 <td>{{light.status}}</td>
+                <td><button type="button" ng-click="lights.removeLight(light._id)">X</button></td>
             </tr>
             <caption>Total: {{lights.lights.length}}</caption>
         </table>
