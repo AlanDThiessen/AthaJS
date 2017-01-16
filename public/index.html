@@ -10,10 +10,12 @@
             <tr>
                 <th>Name</th>
                 <th>Id</th>
+                <th></th>
             </tr>
             <tr ng-repeat="room in rooms.rooms">
                 <td>{{room.name}}</td>
                 <td>{{room._id}}</td>
+                <td><button type="button" ng-click="rooms.removeRoom(room._id)">X</button></td>
             </tr>
             <caption>Total: {{rooms.rooms.length}}</caption>
         </table>

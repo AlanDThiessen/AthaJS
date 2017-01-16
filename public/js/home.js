@@ -36,13 +36,19 @@
     RoomsCtrl.$inject = ['$scope', 'RoomSvc'];
     function RoomsCtrl($scope, roomSvc) {
         var roomsCtrl = this;
+        roomsCtrl.removeRoom = RemoveRoom;
         roomsCtrl.rooms = [];
 
-        roomSvc.find({
-            $limit: 100
-        }).then(OnRoomsUpdate, OnError);
+        UpdateRooms();
 
         return roomsCtrl;
+
+
+        function UpdateRooms() {
+            roomSvc.find({
+                $limit: 100
+            }).then(OnRoomsUpdate, OnError);
+        }
 
 
         function OnRoomsUpdate(data) {
@@ -53,6 +59,11 @@
             });
 
             $scope.$apply();
+        }
+
+
+        function RemoveRoom(id) {
+            roomSvc.remove(id).then(UpdateRooms, OnError);
         }
 
 
