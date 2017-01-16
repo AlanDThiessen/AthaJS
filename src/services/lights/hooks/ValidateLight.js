@@ -21,6 +21,13 @@ module.exports = function(options) {
             throw new Error('Lights must have a name.');
         }
 
+        if(typeof(hook.data.roomId) == 'undefined') {
+            throw new Error('Lights must have a roomId.');
+        }
+        else if(typeof(hook.data.roomId) != 'string') {
+            throw new Error('Light roomId must be a string.');
+        }
+
         if(typeof(hook.data.isDimmable) == 'undefined') {
             hook.data.isDimmable = false;
         }
