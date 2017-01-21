@@ -19,6 +19,15 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                 templateUrl: 'templates/home.html',
                 controller: 'MainCtrl',
                 controllerAs: 'main'
+            })
+
+            .state('home.houses', {
+                url: '/home/houses',
+                views: {
+                    'mainView': {
+                        templateUrl: 'templates/houses.html'
+                    }
+                }
             });
 
             /*

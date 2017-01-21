@@ -33,14 +33,11 @@
     MainController.$inject = [];
     function MainController() {
         var mainCtrl = this;
-
-        Start();
-
+        mainCtrl.menuClick = MenuClick;
         return mainCtrl;
 
+        function MenuClick(state) {
 
-        function Start() {
-            //pure.start();
         }
     }
 
