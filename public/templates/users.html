@@ -1,25 +1,26 @@
 
 <h1>Users</h1>
 
-<table class="pure-table">
-    <tr>
-        <th>Room</th>
-        <th>Name</th>
-        <th>Address</th>
-        <th>Dimmable</th>
-        <th>Level</th>
-        <th>Status</th>
-        <th></th>
+<table class="pure-table pure-table-bordered">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tr ng-repeat="user in users.users">
+        <td>{{user.email}}</td>
+        <td>{{user.name}}</td>
+        <td>
+            <button type="button">
+                <i class="material-icons">edit</i>
+            </button>
+            <button type="button" ng-click="users.removeUser(user._id)">
+                <i class="material-icons">delete</i>
+            </button>
+        </td>
     </tr>
-    <tr ng-repeat="light in lights.lights">
-        <td>{{light.roomName}}</td>
-        <td>{{light.name}}</td>
-        <td>{{light.address}}</td>
-        <td>{{light.isDimmable}}</td>
-        <td>{{light.level}}</td>
-        <td>{{light.status}}</td>
-        <td><button type="button" ng-click="lights.removeLight(light._id)">X</button></td>
-    </tr>
-    <caption>Total: {{lights.lights.length}}</caption>
+    <caption>Total: {{users.users.length}}</caption>
 </table>
 

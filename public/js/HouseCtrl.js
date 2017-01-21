@@ -28,33 +28,42 @@
     'use strict';
 
     angular.module('Atha')
-        .controller('UsersCtrl', UsersCtrl);
+        .controller('HouseCtrl', HouseCtrl);
 
-    UsersCtrl.$inject = ['$scope', 'FeathersJS'];
-    function UsersCtrl($scope, feathers) {
-        var usersCtrl = this;
-        usersCtrl.users = [];
-        var usersSvc = feathers.getService('users');
-        GetUsers();
+    HouseCtrl.$inject = ['$scope', 'FeathersJS'];
+    function HouseCtrl($scope, feathers) {
+        var houseCtrl = this;
+        houseCtrl.newHouseName = '';
+        houseCtrl.houses = [];
+        houseCtrl.new = CreateHouse;
+        var houseSvc = feathers.getService('houses');
+        GetHouses();
 
-        return usersCtrl;
+        return houseCtrl;
 
 
-        function GetUsers() {
-            usersSvc.find({
+        function GetHouses() {
+            houseSvc.find({
                 $limit: 100
-            }).then(OnUsersUpdate, OnError);
+            }).then(OnHousesUpdate, OnError);
         }
 
 
-        function OnUsersUpdate(data) {
-            usersCtrl.users = [];
+        function OnHousesUpdate(data) {
+            houseCtrl.houses = [];
 
-            data.data.forEach(function(user) {
-                usersCtrl.users.push(user);
+            data.data.forEach(function(house) {
+                houseCtrl.houses.push(house);
             });
 
             $scope.$apply();
+        }
+
+
+        function CreateHouse() {
+            houseSvc.create({
+                'name': houseCtrl.newHouseName
+            });
         }
 
 

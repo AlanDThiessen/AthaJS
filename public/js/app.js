@@ -22,7 +22,7 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
             })
 
             .state('home.users', {
-                url: '/home/users',
+                url: '/users',
                 views: {
                     'mainView': {
                         templateUrl: 'templates/users.html',
@@ -33,10 +33,12 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
             })
 
             .state('home.houses', {
-                url: '/home/houses',
+                url: '/houses',
                 views: {
                     'mainView': {
-                        templateUrl: 'templates/houses.html'
+                        templateUrl: 'templates/houses.html',
+                        controller: 'HouseCtrl',
+                        controllerAs: 'houses'
                     }
                 }
             })

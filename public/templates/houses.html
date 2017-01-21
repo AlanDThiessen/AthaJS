@@ -1,2 +1,28 @@
-
 <h1>Houses</h1>
+
+<form class="pure-form">
+    <fieldset>
+        <input type="text" placeholder="House Name" ng-model="houses.newHouseName">
+        <button class="pure-button" ng-click="houses.new()" ng-disabled="houses.newHouseName == ''">Create</button>
+    </fieldset>
+</form>
+<table class="pure-table pure-table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tr ng-repeat="house in houses.houses">
+        <td>{{house.name}}</td>
+        <td>
+            <button type="button">
+                <i class="material-icons">edit</i>
+            </button>
+            <button type="button" ng-click="houses.removeHouse(house._id)">
+                <i class="material-icons">delete</i>
+            </button>
+        </td>
+    </tr>
+    <caption>Total: {{houses.houses.length}}</caption>
+</table>
