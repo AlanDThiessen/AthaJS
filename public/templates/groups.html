@@ -1,0 +1,29 @@
+<h1>Groups</h1>
+
+<form class="pure-form">
+    <fieldset>
+        <input type="text" placeholder="Group Name" ng-model="groups.newGroupName">
+        <button class="pure-button" ng-click="groups.new()" ng-disabled="groups.newGroupName == ''">Create</button>
+    </fieldset>
+</form>
+<table class="pure-table pure-table-bordered">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tr ng-repeat="group in groups.groups">
+        <td>{{group.name}}</td>
+        <td>
+            <button type="button">
+                <i class="material-icons">edit</i>
+            </button>
+            <button type="button" ng-click="groups.removeGroup(group._id)">
+                <i class="material-icons">delete</i>
+            </button>
+        </td>
+    </tr>
+    <caption>Total: {{groups.groups.length}}</caption>
+</table>
+

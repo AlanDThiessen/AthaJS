@@ -42,6 +42,17 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                     }
                 }
             })
+
+            .state('home.groups', {
+                url: '/groups',
+                views: {
+                    'mainView': {
+                        templateUrl: 'templates/groups.html',
+                        controller: 'GroupsCtrl',
+                        controllerAs: 'groups'
+                    }
+                }
+            })
         ;
 
             /*
