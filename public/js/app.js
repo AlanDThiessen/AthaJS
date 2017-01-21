@@ -6,12 +6,7 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
     AthaConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
 
     function AthaConfig($stateProvider, $urlRouterProvider) {
-        // Ionic uses AngularUI Router which uses the concept of states
-        // Learn more here: https://github.com/angular-ui/ui-router
-        // Set up the various states which the app can be in.
         $stateProvider
-
-        // setup an abstract state for the tabs directive
             .state('login', {
                 url: '/login',
                 templateUrl: 'templates/LogIn.html',
@@ -21,7 +16,9 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
 
             .state('home', {
                 url: '/home',
-                templateUrl: 'templates/home.html'
+                templateUrl: 'templates/home.html',
+                controller: 'MainCtrl',
+                controllerAs: 'main'
             });
 
             /*

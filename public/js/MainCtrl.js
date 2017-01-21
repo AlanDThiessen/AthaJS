@@ -24,53 +24,14 @@
  *
  ******************************************************************************/
 
-
 (function() {
     'use strict';
 
     angular.module('Atha')
-        .controller('StarterCtrl', StarterController);
+        .controller('MainCtrl', MainController);
 
-
-    StarterController.$inject = ['$state', 'FeathersJS'];
-    function StarterController($state, feathers) {
-        var startCtrl = this;
-        startCtrl.showLogin = false;
-        startCtrl.email = '';
-        startCtrl.password = '';
-        startCtrl.login = DoLogin;
-
-        var client;
-
-        return startCtrl;
-
-        /////////////////////////////////////////////////////////
-        function ServerConnect(email, password) {
-            if(typeof(client) == 'undefined') {
-                client = feathers.connect('http://localhost:3030');
-            }
-
-            client.authenticate({
-                'type': 'local',
-                'email': email,
-                'password': password
-            }).then(ConnectionSuccess, ConnectionFailed);
-        }
-
-
-        function ConnectionSuccess() {
-            $state.go('home');
-        }
-
-
-        function ConnectionFailed() {
-            startCtrl.showLogin = true;
-        }
-
-
-        function DoLogin() {
-            ServerConnect(startCtrl.email, startCtrl.password);
-        }
+    MainController.$inject = [];
+    function MainController() {
     }
 
 })();
