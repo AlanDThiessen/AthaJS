@@ -16,3 +16,9 @@ body {
 .menu {
     display: inline-block;
 }
+
+
+.center {
+    margin: auto;
+    display: block
+}

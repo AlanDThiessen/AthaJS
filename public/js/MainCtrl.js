@@ -30,15 +30,11 @@
     angular.module('Atha')
         .controller('MainCtrl', MainController);
 
-    MainController.$inject = [];
-    function MainController() {
+    MainController.$inject = ['FeathersJS'];
+    function MainController(feathers) {
         var mainCtrl = this;
-        mainCtrl.menuClick = MenuClick;
+        mainCtrl.logout = feathers.logout;
         return mainCtrl;
-
-        function MenuClick(state) {
-
-        }
     }
 
 })();

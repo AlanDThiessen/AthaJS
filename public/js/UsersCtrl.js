@@ -24,25 +24,42 @@
  *
  ******************************************************************************/
 
-
 (function() {
     'use strict';
 
     angular.module('Atha')
-        .controller('StarterCtrl', StarterController);
+        .controller('UsersCtrl', UsersCtrl);
+
+    UsersCtrl.$inject = ['FeathersJS'];
+    function UsersCtrl(feathers) {
+        var usersCtrl = this;
+        usersCtrl.users = [];
+        var usersSvc = feathers.getService('user');
+        GetUsers();
+
+        return usersCtrl;
 
 
-    StarterController.$inject = ['FeathersJS'];
-    function StarterController(feathers) {
-        var startCtrl = this;
-        startCtrl.email = '';
-        startCtrl.password = '';
-        startCtrl.login = DoLogin;
-        return startCtrl;
+        function GetUsers() {
+            usersSvc.find({
+                $limit: 100
+            }).then(OnUsersUpdate, OnError);
+        }
 
-        /////////////////////////////////////////////////////////
-        function DoLogin() {
-            feathers.login(startCtrl.email, startCtrl.password);
+
+        function OnUsersUpdate(data) {
+            usersCtrl.users = [];
+
+            data.data.forEach(function(user) {
+                usersCtrl.users.push(user);
+            });
+
+            $scope.$apply();
+        }
+
+
+        function OnError(err) {
+            console.log(err);
         }
     }
 

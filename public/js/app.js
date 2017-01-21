@@ -21,6 +21,17 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                 controllerAs: 'main'
             })
 
+            .state('home.users', {
+                url: '/home/users',
+                views: {
+                    'mainView': {
+                        templateUrl: 'templates/users.html',
+                        controller: 'UsersCtrl',
+                        controllerAs: 'users'
+                    }
+                }
+            })
+
             .state('home.houses', {
                 url: '/home/houses',
                 views: {
@@ -28,7 +39,8 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                         templateUrl: 'templates/houses.html'
                     }
                 }
-            });
+            })
+        ;
 
             /*
             .state('tab', {

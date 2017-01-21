@@ -30,31 +30,66 @@
     angular.module('FeathersJS', [])
         .factory('FeathersJS', FeathersJSService);
 
-    FeathersJSService.$inject = [];
-    function FeathersJSService() {
+    FeathersJSService.$inject = ['$state'];
+    function FeathersJSService($state) {
         var feathersSvc = {
-            client: undefined,
-            connect: ServerConnect
+            connect: ServerConnect,
+            login: Login,
+            logout: Logout,
+            getService: GetService
         };
+
+        var app;
+
+        ServerConnect();
 
         return feathersSvc;
 
+        function GetService(svcName) {
+            if(typeof(app) != 'undefined') {
+                return app.service(svcName);
+            }
+        }
 
-        function ServerConnect(serverURL) {
-            var socket = io(serverURL);
-            var client = feathers()
+        function ServerConnect() {
+            var socket = io('http://localhost:3030');
+            app = feathers()
                 .configure(feathers.hooks())
                 .configure(feathers.socketio(socket))
                 .configure(feathers.authentication({storage: window.localStorage}));
 
-            feathersSvc.client = client;
+            app.authenticate().then(ConnectionSuccess, GotoLogin);
+
+            app.on('reauthentication-error', GotoLogin);
 
             socket.io.engine.on('upgrade', function(transport) {
                 console.log('transport changed');
-                client.authenticate();
+                app.authenticate();
             });
+        }
 
-            return client;
+
+        function Login(email, password) {
+            app.authenticate({
+                'type': 'local',
+                'email': email,
+                'password': password
+            }).then(ConnectionSuccess, GotoLogin);
+        }
+
+
+        function Logout() {
+            app.logout().then(GotoLogin);
+        }
+
+
+        function ConnectionSuccess() {
+            $state.go('home');
+        }
+
+
+        function GotoLogin(error) {
+            $state.go('login');
         }
     }
 
