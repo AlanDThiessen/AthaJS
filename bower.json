@@ -3,6 +3,5 @@
   "private": "true",
   "devDependencies": {},
   "dependencies": {
-    "pure": "^0.6.2"
   }
 }

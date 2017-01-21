@@ -32,6 +32,16 @@
 
     MainController.$inject = [];
     function MainController() {
+        var mainCtrl = this;
+
+        Start();
+
+        return mainCtrl;
+
+
+        function Start() {
+            //pure.start();
+        }
     }
 
 })();
