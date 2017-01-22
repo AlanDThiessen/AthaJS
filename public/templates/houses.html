@@ -13,13 +13,13 @@
             <th></th>
         </tr>
     </thead>
-    <tr ng-repeat="house in houses.houses">
+    <tr ng-repeat="(key, house) in houses.houses">
         <td>{{house.name}}</td>
         <td>
             <button type="button">
                 <i class="material-icons">edit</i>
             </button>
-            <button type="button" ng-click="houses.removeHouse(house._id)">
+            <button type="button" ng-click="houses.remove(house._id)">
                 <i class="material-icons">delete</i>
             </button>
         </td>

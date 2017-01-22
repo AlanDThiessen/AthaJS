@@ -31,15 +31,34 @@
         .controller('HouseCtrl', HouseCtrl);
 
     HouseCtrl.$inject = ['$scope', 'FeathersJS'];
-    function HouseCtrl($scope, feathers) {
+    function HouseCtrl($scope, feathersSvc) {
         var houseCtrl = this;
         houseCtrl.newHouseName = '';
-        houseCtrl.houses = [];
+        houseCtrl.houses = {};
         houseCtrl.new = CreateHouse;
-        var houseSvc = feathers.getService('houses');
-        GetHouses();
+        houseCtrl.remove = RemoveHouse;
+        var houseSvc = feathersSvc.getService('houses');
+        var user = feathersSvc.getUser();
+
+        Start();
 
         return houseCtrl;
+
+
+        function Start() {
+            $scope.$on('$destroy', Unsubscribe);
+            houseSvc.on('created', OnHouseCreated);
+            houseSvc.on('updated', OnHouseUpdated);
+            houseSvc.on('removed', OnHouseRemoved);
+            GetHouses();
+        }
+
+
+        function Unsubscribe() {
+            houseSvc.off('created', OnHouseCreated);
+            houseSvc.off('updated', OnHouseUpdated);
+            houseSvc.off('removed', OnHouseRemoved);
+        }
 
 
         function GetHouses() {
@@ -50,13 +69,37 @@
 
 
         function OnHousesUpdate(data) {
-            houseCtrl.houses = [];
+            houseCtrl.houses = {};
 
             data.data.forEach(function(house) {
-                houseCtrl.houses.push(house);
+                houseCtrl.houses[house._id] = house;
             });
 
             $scope.$apply();
+        }
+
+
+        function OnHouseCreated(house) {
+            if(house.userId == user._id) {
+                houseCtrl.houses[house._id] = house;
+                $scope.$apply();
+            }
+        }
+
+
+        function OnHouseUpdated(house) {
+            if(houseCtrl.houses.hasOwnProperty(house._id)) {
+                houseCtrl.houses[house._id] = house;
+                $scope.$apply();
+            }
+        }
+
+
+        function OnHouseRemoved(house) {
+            if(houseCtrl.houses.hasOwnProperty(house._id)) {
+                delete(houseCtrl.houses[house._id]);
+                $scope.$apply();
+            }
         }
 
 
@@ -64,6 +107,11 @@
             houseSvc.create({
                 'name': houseCtrl.newHouseName
             });
+        }
+
+
+        function RemoveHouse(houseId) {
+            houseSvc.remove(houseId).then(null, OnError);
         }
 
 

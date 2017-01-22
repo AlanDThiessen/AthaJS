@@ -106,12 +106,12 @@
         function CreateGroup() {
             groupsSvc.create({
                 'name': groupCtrl.newGroupName
-            });
+            }).on(null, OnError);
         }
 
 
         function RemoveGroup(groupId) {
-            groupsSvc.remove(groupId);
+            groupsSvc.remove(groupId).then(null, OnError);
         }
 
 

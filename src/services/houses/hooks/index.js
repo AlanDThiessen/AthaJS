@@ -18,7 +18,7 @@ exports.before = {
     update: [],
     patch: [],
     remove: [
-        auth.restrictToOwner({ ownerField: '_id' })
+        auth.restrictToOwner({ ownerField: 'userId' })
     ]
 };
 
