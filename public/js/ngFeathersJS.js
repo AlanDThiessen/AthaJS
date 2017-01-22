@@ -36,7 +36,8 @@
             connect: ServerConnect,
             login: Login,
             logout: Logout,
-            getService: GetService
+            getService: GetService,
+            getUser: GetCurrentUser
         };
 
         var app;
@@ -50,6 +51,12 @@
                 return app.service(svcName);
             }
         }
+
+
+        function GetCurrentUser() {
+            return app.get('user');
+        }
+
 
         function ServerConnect() {
             var socket = io('http://localhost:3030');

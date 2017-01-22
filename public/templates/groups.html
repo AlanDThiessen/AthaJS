@@ -13,13 +13,13 @@
         <th></th>
     </tr>
     </thead>
-    <tr ng-repeat="group in groups.groups">
+    <tr ng-repeat="(key, group) in groups.groups">
         <td>{{group.name}}</td>
         <td>
             <button type="button">
                 <i class="material-icons">edit</i>
             </button>
-            <button type="button" ng-click="groups.removeGroup(group._id)">
+            <button type="button" ng-click="groups.remove(group._id)">
                 <i class="material-icons">delete</i>
             </button>
         </td>
