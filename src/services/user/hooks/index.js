@@ -7,6 +7,29 @@ const hooks = require('feathers-hooks');
 const hooksCommon = require('feathers-hooks-common');
 const auth = require('feathers-authentication').hooks;
 
+const schema = {
+    include: [
+        {
+            service: 'accounts',
+            nameAs: 'account',
+            parentField: '_id',
+            childField: 'userId',
+            asArray: false
+        },
+        {
+            service: 'groupUsers',
+            nameAs: 'groups',
+            parentField: '_id',
+            childField: 'userId',
+            asArray: true,
+            query: {
+                $select: ['groupId']
+            }
+        }
+    ]
+};
+
+
 exports.before = {
     all: [],
     find: [
@@ -48,50 +71,10 @@ exports.after = {
         hooks.remove('password')
     ],
     find: [
-        hooksCommon.populate( {
-            include: [ {
-                service: 'accounts',
-                nameAs: 'account',
-                parentField: 'user_id',
-                childField: 'userId',
-                asArray: true
-            }]
-        }),
-        hooksCommon.populate( {
-            include: [ {
-                service: 'groupUsers',
-                nameAs: 'groups',
-                parentField: 'user_id',
-                childField: 'userId',
-                asArray: true,
-                query: {
-                    $select: ['groupId']
-                }
-            }]
-        })
+        hooksCommon.populate( { schema } )
     ],
     get: [
-        hooksCommon.populate( {
-            include: [ {
-                service: 'accounts',
-                nameAs: 'account',
-                parentField: '_id',
-                childField: 'userId',
-                asArray: true
-            }]
-        }),
-        hooksCommon.populate( {
-            include: [ {
-                service: 'groupUsers',
-                nameAs: 'groups',
-                parentField: '_id',
-                childField: 'userId',
-                asArray: true,
-                query: {
-                    $select: ['groupId']
-                }
-            }]
-        })
+        hooksCommon.populate( { schema } )
     ],
     create: [
         createAccount()
