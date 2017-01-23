@@ -30,12 +30,13 @@
     angular.module('Atha')
         .controller('HouseCtrl', HouseCtrl);
 
-    HouseCtrl.$inject = ['$scope', 'FeathersJS'];
-    function HouseCtrl($scope, feathersSvc) {
+    HouseCtrl.$inject = ['$scope', '$state', 'FeathersJS'];
+    function HouseCtrl($scope, $state, feathersSvc) {
         var houseCtrl = this;
         houseCtrl.newHouseName = '';
         houseCtrl.houses = {};
         houseCtrl.new = CreateHouse;
+        houseCtrl.edit = EditHouse;
         houseCtrl.remove = RemoveHouse;
         var houseSvc = feathersSvc.getService('houses');
         var user = feathersSvc.getUser();
@@ -112,6 +113,13 @@
 
         function RemoveHouse(houseId) {
             houseSvc.remove(houseId).then(null, OnError);
+        }
+
+
+        function EditHouse(houseId) {
+            $state.go('home.houseDetails', {
+                'houseId': houseId
+            });
         }
 
 

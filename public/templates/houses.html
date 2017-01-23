@@ -17,7 +17,7 @@
         <td>{{house.name}}</td>
         <td>
             <button type="button">
-                <i class="material-icons">edit</i>
+                <i class="material-icons" ng-click="houses.edit(house._id)">edit</i>
             </button>
             <button type="button" ng-click="houses.remove(house._id)">
                 <i class="material-icons">delete</i>

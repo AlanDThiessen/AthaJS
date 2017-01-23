@@ -64,6 +64,33 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                     }
                 }
             })
+
+            .state('home.houseDetails', {
+                url: '/houseDetails/:houseId',
+                views: {
+                    'mainView': {
+                        templateUrl: 'templates/houseDetails.html',
+                        controller: 'HouseDetailsCtrl',
+                        controllerAs: 'house'
+                    },
+                    'houseGroups@home.houseDetails': {
+                        templateUrl: 'templates/groups.html',
+                        controller: 'GroupsCtrl',
+                        controllerAs: 'groups'
+                    },
+                    'houseUsers@home.houseDetails': {
+                        templateUrl: 'templates/users.html',
+                        controller: 'UsersCtrl',
+                        controllerAs: 'users'
+                    },
+                    'houseZones@home.houseDetails': {
+                        templateUrl: 'templates/zones.html'
+                    },
+                    'houseDevices@home.houseDetails': {
+                        templateUrl: 'templates/devices.html'
+                    }
+                }
+            })
         ;
 
             /*

@@ -22,3 +22,10 @@ body {
     margin: auto;
     display: block
 }
+
+
+.pageSection {
+    border-top: 1px solid black;
+    padding: 1em;
+    margin-top: 1em;
+}
