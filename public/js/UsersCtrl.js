@@ -31,13 +31,31 @@
         .controller('UsersCtrl', UsersCtrl);
 
     UsersCtrl.$inject = ['$scope', 'FeathersJS'];
-    function UsersCtrl($scope, feathers) {
+    function UsersCtrl($scope, feathersSvc) {
         var usersCtrl = this;
-        usersCtrl.users = [];
-        var usersSvc = feathers.getService('users');
-        GetUsers();
+        usersCtrl.users = {};
+        usersCtrl.remove = RemoveUser;
+        var usersSvc = feathersSvc.getService('users');
+
+        Start();
 
         return usersCtrl;
+
+
+        function Start() {
+            $scope.$on('$destroy', Unsubscribe);
+            usersSvc.on('created', OnUserCreated);
+            usersSvc.on('updated', OnUserUpdated);
+            usersSvc.on('removed', OnUserRemoved);
+            GetUsers();
+        }
+
+
+        function Unsubscribe() {
+            usersSvc.off('created', OnUserCreated);
+            usersSvc.off('updated', OnUserUpdated);
+            usersSvc.off('removed', OnUserRemoved);
+        }
 
 
         function GetUsers() {
@@ -48,13 +66,41 @@
 
 
         function OnUsersUpdate(data) {
-            usersCtrl.users = [];
+            usersCtrl.users = {};
 
             data.data.forEach(function(user) {
-                usersCtrl.users.push(user);
+                usersCtrl.users[user._id] = user;
             });
 
             $scope.$apply();
+        }
+
+
+        function OnUserCreated(user) {
+            usersCtrl.users[user._id] = user;
+        }
+
+
+        function OnUserUpdated(user) {
+            if(usersCtrl.users.hasOwnProperty(user._id)) {
+                usersCtrl.users[user._id] = user;
+                $scope.$apply();
+            }
+        }
+
+
+        function OnUserRemoved(user) {
+            if(usersCtrl.users.hasOwnProperty(user._id)) {
+                delete(usersCtrl.users[user._id]);
+                $scope.$apply();
+            }
+        }
+
+
+        function RemoveUser(id) {
+            usersSvc.remove(id, {
+                'accountId': usersCtrl.users[id].account.id
+            }).then(null, OnError);
         }
 
 

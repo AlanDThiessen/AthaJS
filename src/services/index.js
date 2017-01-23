@@ -1,5 +1,4 @@
 'use strict';
-const accounts = require('./accounts');
 const groupUsers = require('./groupUsers');
 const devTemplates = require('./devTemplates');
 const devStatus = require('./devStatus');
@@ -27,5 +26,4 @@ module.exports = function() {
   app.configure(devStatus);
   app.configure(devTemplates);
   app.configure(groupUsers);
-  app.configure(accounts);
 };

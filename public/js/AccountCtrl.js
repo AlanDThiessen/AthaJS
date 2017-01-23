@@ -33,13 +33,14 @@
     AccountCtrl.$inject = ['$scope', '$stateParams', 'FeathersJS'];
     function AccountCtrl($scope, $stateParams, feathersSvc) {
         var accountCtrl = this;
-        accountCtrl.account = {};
         accountCtrl.update = UpdateAccount;
-        var accountsSvc = feathersSvc.getService('accounts');
-        var user = feathersSvc.getUser();
-        var account = accountsSvc.find({
-            'userId': user._id
-        }).then(AccountRetrieved, OnError);
+        var usersSvc = feathersSvc.getService('users');
+        accountCtrl.account = feathersSvc.getUser();
+        accountCtrl.changePass = {
+            'oldPassword': '',
+            'newPassword': '',
+            'confirmPassword': ''
+        };
 
         Start();
 
@@ -48,28 +49,18 @@
 
         function Start() {
             $scope.$on('$destroy', Unsubscribe);
-            //accountsSvc.on('created', OnGroupCreated);
-            accountsSvc.on('updated', OnAccountUpdated);
-            //accountsSvc.on('removed', OnGroupRemoved);
+            usersSvc.on('updated', OnAccountUpdated);
         }
 
 
         function Unsubscribe() {
-            //accountsSvc.off('created', OnGroupCreated);
-            accountsSvc.off('updated', OnAccountUpdated);
-            //accountsSvc.off('removed', OnGroupRemoved);
+            usersSvc.off('updated', OnAccountUpdated);
         }
 
 
-        function AccountRetrieved(data) {
-            accountCtrl.account = data.data[0];
-            $scope.$apply();
-        }
-
-
-        function OnAccountUpdated(account) {
-            if(account.userId == user._id) {
-                accountCtrl.account = account;
+        function OnAccountUpdated(user) {
+            if(user._id == user._id) {
+                accountCtrl.account = user;
                 $scope.$apply();
             }
         }
@@ -80,7 +71,16 @@
             angular.copy(accountCtrl.account, account);
             var id = account._id;
             delete(account._id);
-            accountsSvc.update(id, account).then(null, OnError);
+
+            if(account.hasOwnProperty('_include')) {
+                delete(account._include);
+            }
+
+            if(account.hasOwnProperty('groups')) {
+                delete(account.groups);
+            }
+
+            usersSvc.patch(id, account).then(null, OnError);
         }
 
 

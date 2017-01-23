@@ -1,7 +1,5 @@
 'use strict';
 
-const createAccount = require('./createAccount');
-
 const globalHooks = require('../../../hooks');
 const hooks = require('feathers-hooks');
 const hooksCommon = require('feathers-hooks-common');
@@ -9,13 +7,6 @@ const auth = require('feathers-authentication').hooks;
 
 const schema = {
     include: [
-        {
-            service: 'accounts',
-            nameAs: 'account',
-            parentField: '_id',
-            childField: 'userId',
-            asArray: false
-        },
         {
             service: 'groupUsers',
             nameAs: 'groups',
@@ -62,7 +53,7 @@ exports.before = {
         auth.verifyToken(),
         auth.populateUser(),
         auth.restrictToAuthenticated(),
-        auth.restrictToOwner({ ownerField: '_id' })
+        //auth.restrictToOwner({ ownerField: '_id' })
     ]
 };
 
@@ -77,7 +68,6 @@ exports.after = {
         hooksCommon.populate( { schema } )
     ],
     create: [
-        createAccount()
     ],
     update: [],
     patch: [],
