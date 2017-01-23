@@ -1,5 +1,7 @@
 'use strict';
 
+const createAccount = require('./createAccount');
+
 const globalHooks = require('../../../hooks');
 const hooks = require('feathers-hooks');
 const hooksCommon = require('feathers-hooks-common');
@@ -43,7 +45,18 @@ exports.before = {
 
 exports.after = {
     all: [
-        hooks.remove('password'),
+        hooks.remove('password')
+    ],
+    find: [
+        hooksCommon.populate( {
+            include: [ {
+                service: 'accounts',
+                nameAs: 'account',
+                parentField: 'user_id',
+                childField: 'userId',
+                asArray: true
+            }]
+        }),
         hooksCommon.populate( {
             include: [ {
                 service: 'groupUsers',
@@ -57,9 +70,32 @@ exports.after = {
             }]
         })
     ],
-    find: [],
-    get: [],
-    create: [],
+    get: [
+        hooksCommon.populate( {
+            include: [ {
+                service: 'accounts',
+                nameAs: 'account',
+                parentField: '_id',
+                childField: 'userId',
+                asArray: true
+            }]
+        }),
+        hooksCommon.populate( {
+            include: [ {
+                service: 'groupUsers',
+                nameAs: 'groups',
+                parentField: '_id',
+                childField: 'userId',
+                asArray: true,
+                query: {
+                    $select: ['groupId']
+                }
+            }]
+        })
+    ],
+    create: [
+        createAccount()
+    ],
     update: [],
     patch: [],
     remove: []

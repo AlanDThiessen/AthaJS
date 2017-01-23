@@ -21,6 +21,17 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                 controllerAs: 'main'
             })
 
+            .state('home.account', {
+                url: '/account',
+                views: {
+                    'mainView': {
+                        templateUrl: 'templates/account.html',
+                        controller: 'AccountCtrl',
+                        controllerAs: 'account'
+                    }
+                }
+            })
+
             .state('home.users', {
                 url: '/users',
                 views: {
