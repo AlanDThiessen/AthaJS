@@ -39,6 +39,13 @@
         groupCtrl.remove = RemoveGroup;
         var groupsSvc = feathersSvc.getService('groups');
         var user = feathersSvc.getUser();
+        var houseId = $stateParams.houseId;
+
+        var query = {};
+
+        if(typeof(houseId) != 'undefined') {
+            query.houseId = houseId;
+        }
 
         Start();
 
@@ -63,7 +70,8 @@
 
         function GetGroups() {
             groupsSvc.find({
-                $limit: 100
+                $limit: 100,
+                'query': query
             }).then(OnGroupsUpdate, OnError);
         }
 
@@ -81,8 +89,10 @@
 
         function OnGroupCreated(group) {
             if(group.userId == user._id) {
-                groupCtrl.groups[group._id] = group;
-                $scope.$apply();
+                if((typeof(houseId) != 'undefined') && (group.houseId == houseId) ) {
+                    groupCtrl.groups[group._id] = group;
+                    $scope.$apply();
+                }
             }
         }
 
@@ -104,9 +114,15 @@
 
 
         function CreateGroup() {
-            groupsSvc.create({
+            var createObj = {
                 'name': groupCtrl.newGroupName
-            }).on(null, OnError);
+            };
+
+            if(typeof(houseId) != 'undefined') {
+                createObj.houseId = houseId;
+            }
+
+            groupsSvc.create(createObj).then(null, OnError);
         }
 
 
