@@ -2,19 +2,17 @@
 <h2>{{house.house.name}}</h2>
 
 <div>
-    <div class="pure-g">
-        <div class="pure-u-1 pageSection">
+    <div class="pure-g pageSection">
+        <div class="pure-u-12-24">
             <div ui-view="houseGroups"></div>
+        </div>
+        <div class="pure-u-12-24">
+            <div ui-view="houseZones"></div>
         </div>
     </div>
     <div class="pure-g">
         <div class="pure-u-1 pageSection">
             <div ui-view="houseUsers"></div>
-        </div>
-    </div>
-    <div class="pure-g">
-        <div class="pure-u-1 pageSection">
-            <div ui-view="houseZones"></div>
         </div>
     </div>
     <div class="pure-g">

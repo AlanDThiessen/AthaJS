@@ -1,1 +1,28 @@
 <h1>Zones</h1>
+
+<form class="pure-form">
+    <fieldset>
+        <input type="text" placeholder="Zone Name" ng-model="zones.newZoneName">
+        <button class="pure-button" ng-click="zones.new()" ng-disabled="zones.newZoneName == ''">Create</button>
+    </fieldset>
+</form>
+<table class="pure-table pure-table-bordered">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tr ng-repeat="(key, zone) in zones.zones">
+        <td>{{zone.name}}</td>
+        <td>
+            <button type="button">
+                <i class="material-icons">edit</i>
+            </button>
+            <button type="button" ng-click="zones.remove(zone._id)">
+                <i class="material-icons">delete</i>
+            </button>
+        </td>
+    </tr>
+    <caption>Total: {{zones.zones.length}}</caption>
+</table>

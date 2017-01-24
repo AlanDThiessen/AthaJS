@@ -65,6 +65,17 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                 }
             })
 
+            .state('home.zones', {
+                url: '/zones',
+                views: {
+                    'mainView': {
+                        templateUrl: 'templates/zones.html',
+                        controller: 'ZonesCtrl',
+                        controllerAs: 'zones'
+                    }
+                }
+            })
+
             .state('home.houseDetails', {
                 url: '/houseDetails/:houseId',
                 views: {
@@ -84,7 +95,9 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                         controllerAs: 'users'
                     },
                     'houseZones@home.houseDetails': {
-                        templateUrl: 'templates/zones.html'
+                        templateUrl: 'templates/zones.html',
+                        controller: 'ZonesCtrl',
+                        controllerAs: 'zones'
                     },
                     'houseDevices@home.houseDetails': {
                         templateUrl: 'templates/devices.html'
