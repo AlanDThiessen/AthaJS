@@ -1,34 +1,37 @@
 <h1>Account</h1>
 
-<h3>Email</h3>
 <div class="pure-g">
-    <form class="pure-form">
-        <fieldset>
-            <input type="email" placeholder="Email" ng-model="account.account.email">
-            <button class="pure-button" ng-click="account.update()">Update Email</button>
-        </fieldset>
-    </form>
+    <div class="pure-u-1 pageSection">
+        <h3>Email</h3>
+        <form class="pure-form">
+            <fieldset>
+                <input type="email" placeholder="Email" ng-model="account.account.email">
+            </fieldset>
+        </form>
+        <h3>Password</h3>
+        <form class="pure-form pure-form-stacked">
+            <fieldset>
+                <input type="password" placeholder="Current Password" ng-model="account.changePass.oldPassword" ng-if="account.function != 'create'">
+                <input type="password" placeholder="New Password" ng-model="account.changePass.newPassword">
+                <input type="password" placeholder="Confirm New Password" ng-model="account.changePass.confirmPassword">
+                <button class="pure-button" ng-click="account.updateAccount()" ng-if="account.function != 'create'">Update Account</button>
+            </fieldset>
+        </form>
+    </div>
 </div>
 
-<h3>Password</h3>
 <div class="pure-g">
-    <form class="pure-form pure-form-stacked">
-        <fieldset>
-            <input type="password" placeholder="Current Password" ng-model="account.changePass.oldPassword">
-            <input type="password" placeholder="New Password" ng-model="account.changePass.newPassword">
-            <input type="password" placeholder="Confirm New Password" ng-model="account.changePass.confirmPassword">
-            <button class="pure-button" ng-click="account.changePassword()">Change Password</button>
-        </fieldset>
-    </form>
-</div>
-
-<h3>Information</h3>
-<div class="pure-g">
-    <form class="pure-form pure-form-stacked">
-        <fieldset>
-            <input type="text" placeholder="Name" ng-model="account.account.name">
-            <button class="pure-button" ng-click="account.update()">Update</button>
-        </fieldset>
-    </form>
+    <div class="pure-u-1 pageSection">
+        <h3>Information</h3>
+        <form class="pure-form pure-form-stacked">
+            <fieldset>
+                <input type="text" placeholder="Name" ng-model="account.account.name">
+                <div ng-switch="account.function">
+                    <button class="pure-button" ng-click="account.createUser()" ng-switch-when="create">Create User</button>
+                    <button class="pure-button" ng-click="account.updateInfo()" ng-switch-default>Update Info</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
 </div>
 

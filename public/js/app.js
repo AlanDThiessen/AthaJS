@@ -22,7 +22,7 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
             })
 
             .state('home.account', {
-                url: '/account',
+                url: '/account/:userId/:houseId',
                 views: {
                     'mainView': {
                         templateUrl: 'templates/account.html',

@@ -1,26 +1,35 @@
 
 <h1>Users</h1>
 
-<table class="pure-table pure-table-bordered">
-    <thead>
-        <tr>
-            <th>Email</th>
-            <th>Name</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tr ng-repeat="(key, user) in users.users">
-        <td>{{user.email}}</td>
-        <td>{{user.name}}</td>
-        <td>
-            <button type="button">
-                <i class="material-icons">edit</i>
-            </button>
-            <button type="button" ng-click="users.remove(user._id)">
-                <i class="material-icons">delete</i>
-            </button>
-        </td>
-    </tr>
-    <caption>Total: {{users.users.length}}</caption>
-</table>
+<div class="pure-g">
+    <div class="pure-u-1">
+        <table class="pure-table pure-table-bordered">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tr ng-repeat="(key, user) in users.users">
+                <td>{{user.email}}</td>
+                <td>{{user.name}}</td>
+                <td>
+                    <button type="button">
+                        <i class="material-icons" ng-click="users.edit(user._id)">edit</i>
+                    </button>
+                    <button type="button" ng-click="users.remove(user._id)">
+                        <i class="material-icons">delete</i>
+                    </button>
+                </td>
+            </tr>
+            <caption>Total: {{users.users.length}}</caption>
+        </table>
+    </div>
+</div>
 
+<div class="pure-g">
+    <div class="pure-u-1">
+        <button class="pure-button pure-button-primary" ng-click="users.new()">Create User</button>
+    </div>
+</div>

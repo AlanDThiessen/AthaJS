@@ -30,12 +30,15 @@
     angular.module('Atha')
         .controller('UsersCtrl', UsersCtrl);
 
-    UsersCtrl.$inject = ['$scope', 'FeathersJS'];
-    function UsersCtrl($scope, feathersSvc) {
+    UsersCtrl.$inject = ['$scope', '$state', '$stateParams', 'FeathersJS'];
+    function UsersCtrl($scope, $state, $stateParams, feathersSvc) {
         var usersCtrl = this;
         usersCtrl.users = {};
         usersCtrl.remove = RemoveUser;
+        usersCtrl.edit = EditUser;
+        usersCtrl.new = NewUser;
         var usersSvc = feathersSvc.getService('users');
+        var houseId = $stateParams.houseId;
 
         Start();
 
@@ -94,6 +97,22 @@
                 delete(usersCtrl.users[user._id]);
                 $scope.$apply();
             }
+        }
+
+
+        function EditUser(userId) {
+            $state.go('home.account', {
+                'userId': userId,
+                'houseId': houseId
+            });
+        }
+
+
+        function NewUser() {
+            $state.go('home.account', {
+                'userId': 'create',
+                'houseId': houseId
+            });
         }
 
 

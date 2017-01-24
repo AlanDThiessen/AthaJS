@@ -34,8 +34,32 @@
     function AccountCtrl($scope, $stateParams, feathersSvc) {
         var accountCtrl = this;
         accountCtrl.update = UpdateAccount;
+        accountCtrl.function = '';
+
         var usersSvc = feathersSvc.getService('users');
-        accountCtrl.account = feathersSvc.getUser();
+        var thisUser = feathersSvc.getUser();
+
+        if($stateParams.userId == "") {
+            accountCtrl.function = 'current';
+            accountCtrl.account = thisUser;
+        }
+        else if($stateParams.userId == 'create') {
+            accountCtrl.function = 'create';
+            accountCtrl.account = {
+                'userId': thisUser._id,        // Associate with the current user
+                'houseId': $stateParams.houseId
+            };
+        }
+        else if(typeof($stateParams.userId) != 'undefined') {
+            usersSvc.get($stateParams.userId).then(
+                function(user) {
+                    accountCtrl.account = user;
+                    $scope.$apply();
+                },
+                OnError
+            );
+        }
+
         accountCtrl.changePass = {
             'oldPassword': '',
             'newPassword': '',
