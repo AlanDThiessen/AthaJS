@@ -11,10 +11,14 @@
         <h3>Password</h3>
         <form class="pure-form pure-form-stacked">
             <fieldset>
-                <input type="password" placeholder="Current Password" ng-model="account.changePass.oldPassword" ng-if="account.function != 'create'">
+                <!-- input type="password"
+                       placeholder="Current Password"
+                       ng-model="account.changePass.oldPassword"
+                       ng-if="account.function == 'current'" -->
                 <input type="password" placeholder="New Password" ng-model="account.changePass.newPassword">
                 <input type="password" placeholder="Confirm New Password" ng-model="account.changePass.confirmPassword">
                 <button class="pure-button" ng-click="account.updateAccount()" ng-if="account.function != 'create'">Update Account</button>
+                <span ng-if="account.error != ''" class="errorMsg">{{account.error}}</span>
             </fieldset>
         </form>
     </div>

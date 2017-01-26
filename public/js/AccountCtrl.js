@@ -33,24 +33,36 @@
     AccountCtrl.$inject = ['$scope', '$stateParams', 'FeathersJS'];
     function AccountCtrl($scope, $stateParams, feathersSvc) {
         var accountCtrl = this;
-        accountCtrl.update = UpdateAccount;
+        accountCtrl.updateAccount = UpdateAccount;
+        accountCtrl.updateInfo = UpdateInfo;
+        accountCtrl.createUser = CreateUser;
+        accountCtrl.changePass = {
+            'oldPassword': '',
+            'newPassword': '',
+            'confirmPassword': ''
+        };
+        accountCtrl.error = '';
         accountCtrl.function = '';
+        accountCtrl.account = {};
 
         var usersSvc = feathersSvc.getService('users');
         var thisUser = feathersSvc.getUser();
 
         if($stateParams.userId == "") {
             accountCtrl.function = 'current';
-            accountCtrl.account = thisUser;
+            angular.copy(thisUser, accountCtrl.account);
         }
         else if($stateParams.userId == 'create') {
             accountCtrl.function = 'create';
             accountCtrl.account = {
                 'userId': thisUser._id,        // Associate with the current user
-                'houseId': $stateParams.houseId
+                'houseId': $stateParams.houseId,
+                'email': '',
+                'password': ''
             };
         }
         else if(typeof($stateParams.userId) != 'undefined') {
+            accountCtrl.function = 'other';
             usersSvc.get($stateParams.userId).then(
                 function(user) {
                     accountCtrl.account = user;
@@ -59,12 +71,6 @@
                 OnError
             );
         }
-
-        accountCtrl.changePass = {
-            'oldPassword': '',
-            'newPassword': '',
-            'confirmPassword': ''
-        };
 
         Start();
 
@@ -90,11 +96,10 @@
         }
 
 
-        function UpdateAccount() {
-            var account = {};
-            angular.copy(accountCtrl.account, account);
-            var id = account._id;
-            delete(account._id);
+        function UpdateUserSvc(id, account) {
+            if(account.hasOwnProperty('_id')) {
+                delete(account._id);
+            }
 
             if(account.hasOwnProperty('_include')) {
                 delete(account._include);
@@ -105,6 +110,85 @@
             }
 
             usersSvc.patch(id, account).then(null, OnError);
+        }
+
+
+        /**
+         * @returns {boolean}
+         */
+        function ValidateNewPasswords() {
+            var match = true;
+
+            if(accountCtrl.changePass.newPassword != accountCtrl.changePass.confirmPassword) {
+                match = false;
+                accountCtrl.error = 'New passwords must match each other'
+            }
+
+            if(accountCtrl.changePass.newPassword == '') {
+                match = false;
+                accountCtrl.error = 'New password cannot be blank'
+            }
+
+            return match;
+        }
+
+
+        /**
+         * @returns {boolean}
+         */
+        function ValidateOldPassword() {
+            var valid = true;
+
+            if(accountCtrl.changePass.oldPassword == '') {
+                valid = false;
+                accountCtrl.error = 'Old password cannot be blank';
+            }
+
+            return valid;
+        }
+
+
+        function UpdateAccount() {
+            var valid = true;
+
+            accountCtrl.error = '';
+
+            if(accountCtrl.account.email == '') {
+                valid = false;
+                accountCtrl.error = 'Please type a valid email address';
+            }
+            else {
+                valid = ValidateNewPasswords();
+            }
+
+            if(valid) {
+                accountCtrl.account.password = accountCtrl.changePass.newPassword;
+                UpdateUserSvc(accountCtrl.account._id, accountCtrl.account);
+            }
+        }
+
+
+        function UpdateInfo() {
+            accountCtrl.error = '';
+
+            var acntToUpdate = {
+                'name': accountCtrl.account.name
+            };
+
+            UpdateUserSvc(accountCtrl.account._id, acntToUpdate);
+        }
+
+
+        function CreateUser() {
+            accountCtrl.error = '';
+
+            if(accountCtrl.account.email == '') {
+                accountCtrl.error = 'Please type a valid email address';
+            }
+            else if(ValidateNewPasswords()) {
+                accountCtrl.account.password = accountCtrl.changePass.newPassword;
+                usersSvc.create(accountCtrl.account).then(null, OnError);
+            }
         }
 
 

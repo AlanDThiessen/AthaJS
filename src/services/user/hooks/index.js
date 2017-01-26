@@ -41,13 +41,15 @@ exports.before = {
         auth.verifyToken(),
         auth.populateUser(),
         auth.restrictToAuthenticated(),
-        auth.restrictToOwner({ ownerField: '_id' })
+        auth.hashPassword(),
+        //auth.restrictToOwner({ ownerField: '_id' })
     ],
     patch: [
         auth.verifyToken(),
         auth.populateUser(),
         auth.restrictToAuthenticated(),
-        auth.restrictToOwner({ ownerField: '_id' })
+        auth.hashPassword(),
+        //auth.restrictToOwner({ ownerField: '_id' })
     ],
     remove: [
         auth.verifyToken(),

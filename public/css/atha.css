@@ -35,3 +35,10 @@ body {
     padding: 1em;
     margin-top: 1em;
 }
+
+
+.errorMsg {
+    font-weight: bold;
+    color: red;
+    font-style: italic;
+}
