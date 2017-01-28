@@ -90,11 +90,6 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                         controller: 'GroupsCtrl',
                         controllerAs: 'groups'
                     },
-                    'houseUsers@home.houseDetails': {
-                        templateUrl: 'templates/users.html',
-                        controller: 'UsersCtrl',
-                        controllerAs: 'users'
-                    },
                     'houseZones@home.houseDetails': {
                         templateUrl: 'templates/zones.html',
                         controller: 'ZonesCtrl',
