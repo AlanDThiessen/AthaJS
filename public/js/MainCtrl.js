@@ -31,10 +31,52 @@
         .controller('MainCtrl', MainController);
 
     MainController.$inject = ['FeathersJS'];
-    function MainController(feathers) {
+    function MainController(feathersSvc) {
         var mainCtrl = this;
-        mainCtrl.logout = feathers.logout;
+        mainCtrl.logout = feathersSvc.logout;
+        mainCtrl.showUsers = false;
+        mainCtrl.showAdmin = false;
+        var user = feathersSvc.getUser();
+
+        if(user.roles.findIndex(SearchUserRole) != -1) {
+            mainCtrl.showUsers = true;
+        }
+
+        if(user.roles.findIndex(SearchUserRoleAdmin) != -1) {
+            mainCtrl.showAdmin = true;
+        }
+
         return mainCtrl;
+
+        /**
+         * @param element
+         * @returns {boolean}
+         */
+        function SearchUserRole(element) {
+            var searchArray = ['admin', 'houseAdmin'];
+
+            if(searchArray.indexOf(element.role) != -1) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        /**
+         * @param element
+         * @returns {boolean}
+         */
+        function SearchUserRoleAdmin(element) {
+            var searchArray = ['admin'];
+
+            if (searchArray.indexOf(element.role) != -1) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     }
 
 })();
