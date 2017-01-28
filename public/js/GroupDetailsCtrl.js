@@ -33,10 +33,20 @@
     GroupDetailsCtrl.$inject = ['$scope', '$stateParams', 'FeathersJS'];
     function GroupDetailsCtrl($scope, $stateParams, feathersSvc) {
         var groupCtrl = this;
+        groupCtrl.group = {};
         var houseId = $stateParams['houseId'];
         var groupId = $stateParams['groupId'];
+        var groupsSvc = feathersSvc.getService('groups');
+
+        groupsSvc.get(groupId).then(OnGroupRerieved, OnError);
 
         return groupCtrl;
+
+
+        function OnGroupRerieved(group) {
+            groupCtrl.group = group;
+            $scope.$apply();
+        }
 
 
         function OnError(error) {
