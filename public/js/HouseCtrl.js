@@ -64,7 +64,12 @@
 
         function GetHouses() {
             houseSvc.find({
-                $limit: 100
+                $limit: 100,
+                query: {
+                    $sort: {
+                        'name': 1
+                    }
+                }
             }).then(OnHousesUpdate, OnError);
         }
 

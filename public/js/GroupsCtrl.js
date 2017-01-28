@@ -41,7 +41,11 @@
         var user = feathersSvc.getUser();
         var houseId = $stateParams.houseId;
 
-        var query = {};
+        var query = {
+            $sort: {
+                'name': 1
+            }
+        };
 
         if(typeof(houseId) != 'undefined') {
             query.houseId = houseId;
