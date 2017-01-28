@@ -30,12 +30,13 @@
     angular.module('Atha')
         .controller('GroupsCtrl', GroupsCtrl);
 
-    GroupsCtrl.$inject = ['$scope', '$stateParams', 'FeathersJS'];
-    function GroupsCtrl($scope, $stateParams, feathersSvc) {
+    GroupsCtrl.$inject = ['$scope', '$state', '$stateParams', 'FeathersJS'];
+    function GroupsCtrl($scope, $state, $stateParams, feathersSvc) {
         var groupCtrl = this;
         groupCtrl.newGroupName = '';
         groupCtrl.groups = {};
         groupCtrl.new = CreateGroup;
+        groupCtrl.edit = EditGroup;
         groupCtrl.remove = RemoveGroup;
         var groupsSvc = feathersSvc.getService('groups');
         var user = feathersSvc.getUser();
@@ -127,6 +128,14 @@
             }
 
             groupsSvc.create(createObj).then(null, OnError);
+        }
+
+
+        function EditGroup(groupId) {
+            $state.go('home.groupDetails', {
+                'houseId': houseId,
+                'groupId': groupId
+            });
         }
 
 

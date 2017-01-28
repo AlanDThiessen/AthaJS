@@ -102,50 +102,28 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                     }
                 }
             })
+
+            .state('home.groupDetails', {
+                url: '/group/:houseId/:groupId',
+                views: {
+                    'mainView': {
+                        templateUrl: 'templates/groupDetails.html',
+                        controller: 'GroupDetailsCtrl',
+                        controllerAs: 'group'
+                    },
+                    'groupUsers@home.groupDetails': {
+                        templateUrl: 'templates/groupUsers.html',
+                        controller: 'GroupUsersCtrl',
+                        controllerAs: 'groupUsers'
+                    },
+                    'groupPermissions@home.groupDetails': {
+                        templateUrl: 'templates/groupPermissions.html',
+                        controller: 'GroupPermissionsCtrl',
+                        controllerAs: 'groupPerms'
+                    }
+                }
+            })
         ;
-
-            /*
-            .state('tab', {
-                url: '/tab',
-                abstract: true,
-                templateUrl: 'templates/tabs.html'
-            })
-
-            // Each tab has its own nav history stack:
-
-            .state('tab.settings', {
-                url: '/settings',
-                views: {
-                    'tab-settings': {
-                        templateUrl: 'templates/tab-settings.html',
-                        controller: 'SettingsCtrl',
-                        controllerAs: 'Settings'
-                    }
-                }
-            })
-
-            .state('tab.rooms', {
-                url: '/rooms',
-                views: {
-                    'tab-rooms': {
-                        templateUrl: 'templates/tab-rooms.html',
-                        controller: 'RoomsCtrl',
-                        controllerAs: 'Rooms'
-                    }
-                }
-            })
-
-            .state('tab.room-detail', {
-                url: '/rooms/:roomId',
-                views: {
-                    'tab-rooms': {
-                        templateUrl: 'templates/rooms-detail.html',
-                        controller: 'RoomDetailsCtrl',
-                        controllerAs: 'Lights'
-                    }
-                }
-            });
-            */
 
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/login');

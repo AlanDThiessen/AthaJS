@@ -17,7 +17,7 @@
         <td>{{group.name}}</td>
         <td>
             <button type="button">
-                <i class="material-icons">edit</i>
+                <i class="material-icons" ng-click="groups.edit(group._id)">edit</i>
             </button>
             <button type="button" ng-click="groups.remove(group._id)">
                 <i class="material-icons">delete</i>

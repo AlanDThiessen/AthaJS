@@ -1,0 +1,19 @@
+<h1>Group Users</h1>
+<h2>{{groupUsers.groupId}}</h2>
+
+<table class="pure-table">
+    <thead>
+    <tr>
+        <th>In Group</th>
+        <th>User</th>
+    </tr>
+    </thead>
+    <tr ng-repeat="user in groupUsers.users">
+        <td>
+            <input type="checkbox" ng-checked="user.inGroup" ng-click="groupUsers.userClicked(user._id)">
+        </td>
+        <td>
+            {{user.name}}
+        </td>
+    </tr>
+</table>
