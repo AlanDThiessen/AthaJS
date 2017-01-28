@@ -1,4 +1,5 @@
 'use strict';
+const roles = require('./roles');
 const groupUsers = require('./groupUsers');
 const devTemplates = require('./devTemplates');
 const devStatus = require('./devStatus');
@@ -26,4 +27,5 @@ module.exports = function() {
   app.configure(devStatus);
   app.configure(devTemplates);
   app.configure(groupUsers);
+  app.configure(roles);
 };
