@@ -26,7 +26,8 @@ exports.before = {
     find: [
         auth.verifyToken(),
         auth.populateUser(),
-        auth.restrictToAuthenticated()
+        auth.restrictToAuthenticated(),
+        globalHooks.adminOrOwner()
     ],
     get: [
         auth.verifyToken(),
@@ -42,6 +43,7 @@ exports.before = {
         auth.populateUser(),
         auth.restrictToAuthenticated(),
         auth.hashPassword(),
+        globalHooks.adminOrOwner()
         //auth.restrictToOwner({ ownerField: '_id' })
     ],
     patch: [
@@ -49,12 +51,14 @@ exports.before = {
         auth.populateUser(),
         auth.restrictToAuthenticated(),
         auth.hashPassword(),
+        globalHooks.adminOrOwner()
         //auth.restrictToOwner({ ownerField: '_id' })
     ],
     remove: [
         auth.verifyToken(),
         auth.populateUser(),
         auth.restrictToAuthenticated(),
+        globalHooks.adminOrOwner()
         //auth.restrictToOwner({ ownerField: '_id' })
     ]
 };

@@ -6,30 +6,30 @@ const service = require('feathers-nedb');
 const hooks = require('./hooks');
 
 module.exports = function(){
-  const app = this;
+    const app = this;
 
-  const db = new NeDB({
-    filename: path.join(app.get('nedb'), 'houses.db'),
-    autoload: true
-  });
+    const db = new NeDB({
+        filename: path.join(app.get('nedb'), 'houses.db'),
+        autoload: true
+    });
 
-  let options = {
-    Model: db,
-    paginate: {
-      default: 5,
-      max: 25
-    }
-  };
+    let options = {
+        Model: db,
+        paginate: {
+            default: 5,
+            max: 25
+        }
+    };
 
-  // Initialize our service with any options it requires
-  app.use('/houses', service(options));
+    // Initialize our service with any options it requires
+    app.use('/houses', service(options));
 
-  // Get our initialize service to that we can bind hooks
-  const housesService = app.service('/houses');
+    // Get our initialize service to that we can bind hooks
+    const housesService = app.service('/houses');
 
-  // Set up our before hooks
-  housesService.before(hooks.before);
+    // Set up our before hooks
+    housesService.before(hooks.before);
 
-  // Set up our after hooks
-  housesService.after(hooks.after);
+    // Set up our after hooks
+    housesService.after(hooks.after);
 };

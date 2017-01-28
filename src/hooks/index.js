@@ -1,13 +1,15 @@
 'use strict';
 
 // Add any common hooks you want to share across services in here.
-// 
-// Below is an example of how a hook is written and exported. Please
+//
 // see http://docs.feathersjs.com/hooks/readme.html for more details
-// on hooks.
 
-exports.myHook = function(options) {
-  return function(hook) {
-    console.log('My custom global hook ran. Feathers is awesome!');
-  };
+exports.adminOrOwner = function(options) {
+    return function(hook) {
+        if(typeof(hook.params.user) != 'undefined') {
+            if (!(Array.isArray(hook.params.user.roles)) || (hook.params.user.roles.indexOf('admin') == -1)) {
+                hook.params.query['userId'] = hook.params.user._id;
+            }
+        }
+    };
 };
