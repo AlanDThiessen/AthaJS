@@ -42,6 +42,13 @@
         var user = feathersSvc.getUser();
         var houseId = $stateParams.houseId;
 
+        var query = {
+            $limit: 100,
+                $sort: {
+                'name': 1
+            }
+        };
+
         Start();
 
         return devicesCtrl;
@@ -64,13 +71,12 @@
 
 
         function GetDevices() {
+            if(typeof(houseId) != 'undefiend') {
+                query['houseId'] = houseId;
+            }
+
             devicesSvc.find({
-                query: {
-                    $limit: 100,
-                    $sort: {
-                        'name': 1
-                    }
-                }
+                'query': query
             }).then(OnDevicesUpdate, OnError);
         }
 
