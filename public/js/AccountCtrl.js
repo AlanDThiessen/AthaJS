@@ -30,22 +30,31 @@
     angular.module('Atha')
         .controller('AccountCtrl', AccountCtrl);
 
-    AccountCtrl.$inject = ['$scope', '$stateParams', 'FeathersJS'];
-    function AccountCtrl($scope, $stateParams, feathersSvc) {
+    AccountCtrl.$inject = ['$scope', '$state', '$stateParams', 'FeathersJS'];
+    function AccountCtrl($scope, $state, $stateParams, feathersSvc) {
         var accountCtrl = this;
         accountCtrl.updateAccount = UpdateAccount;
         accountCtrl.updateInfo = UpdateInfo;
         accountCtrl.createUser = CreateUser;
+        accountCtrl.addRole = AddRole;
         accountCtrl.changePass = {
             'oldPassword': '',
             'newPassword': '',
             'confirmPassword': ''
         };
         accountCtrl.error = '';
+        accountCtrl.message = '';
+        accountCtrl.msgStyle = {
+            'color': 'black',
+            'font-style': 'italic',
+            'font-weight': 'bold'
+        };
+        accountCtrl.newRole = '';
         accountCtrl.function = '';
         accountCtrl.account = {};
 
         var usersSvc = feathersSvc.getService('users');
+        var rolesSvc = feathersSvc.getService('roles');
         var thisUser = feathersSvc.getUser();
 
         if($stateParams.userId == "") {
@@ -68,7 +77,7 @@
                     accountCtrl.account = user;
                     $scope.$apply();
                 },
-                OnError
+                OnUpdateError
             );
         }
 
@@ -97,19 +106,15 @@
 
 
         function UpdateUserSvc(id, account) {
-            if(account.hasOwnProperty('_id')) {
-                delete(account._id);
+            var updateAccount = {};
+
+            angular.copy(account, updateAccount);
+
+            if(updateAccount.hasOwnProperty('_id')) {
+                delete(updateAccount._id);
             }
 
-            if(account.hasOwnProperty('_include')) {
-                delete(account._include);
-            }
-
-            if(account.hasOwnProperty('groups')) {
-                delete(account.groups);
-            }
-
-            usersSvc.patch(id, account).then(null, OnError);
+            usersSvc.patch(id, updateAccount).then(OnUpdateSuccess, OnUpdateError);
         }
 
 
@@ -181,18 +186,50 @@
 
         function CreateUser() {
             accountCtrl.error = '';
+            accountCtrl.message = '';
 
             if(accountCtrl.account.email == '') {
                 accountCtrl.error = 'Please type a valid email address';
             }
             else if(ValidateNewPasswords()) {
                 accountCtrl.account.password = accountCtrl.changePass.newPassword;
-                usersSvc.create(accountCtrl.account).then(null, OnError);
+                usersSvc.create(accountCtrl.account).then(OnCreateSuccess, OnUpdateError);
             }
         }
 
 
-        function OnError(err) {
+        function AddRole() {
+            if(accountCtrl.newRole != '') {
+                rolesSvc.create({
+                    'userId': accountCtrl.account._id,
+                    'role': accountCtrl.newRole
+                }).then(RoleAdded, OnUpdateError);
+            }
+
+            accountCtrl.newRole = '';
+        }
+
+
+        function RoleAdded(data) {
+            accountCtrl.account.roles.push(data.role);
+        }
+
+
+        function OnCreateSuccess() {
+            $state.go('home.users');
+        }
+
+        function OnUpdateSuccess() {
+            accountCtrl.message = 'Account updated successfully.';
+            accountCtrl.msgStyle.color = 'green';
+            $scope.$apply();
+        }
+
+
+        function OnUpdateError(err) {
+            accountCtrl.message = 'Failed to update account.';
+            accountCtrl.msgStyle.color = 'red';
+            $scope.$apply();
             console.log(err);
         }
     }

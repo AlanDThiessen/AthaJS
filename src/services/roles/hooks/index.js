@@ -15,16 +15,16 @@ exports.before = {
     get: [
     ],
     create: [
-        auth.restrictToRoles({ roles: ['admin'] })
+        globalHooks.adminOnly()
     ],
     update: [
-        auth.restrictToRoles({ roles: ['admin'] })
+        globalHooks.adminOnly()
     ],
     patch: [
-        auth.restrictToRoles({ roles: ['admin'] })
+        globalHooks.adminOnly()
     ],
     remove: [
-        auth.restrictToRoles({ roles: ['admin'] })
+        globalHooks.adminOnly()
     ]
 };
 

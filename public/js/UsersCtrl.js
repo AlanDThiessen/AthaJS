@@ -63,7 +63,9 @@
 
         function GetUsers() {
             usersSvc.find({
-                $limit: 100
+                query: {
+                    $limit: 100
+                }
             }).then(OnUsersUpdate, OnError);
         }
 

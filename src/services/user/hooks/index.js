@@ -16,6 +16,17 @@ const schema = {
             query: {
                 $select: ['groupId']
             }
+        },
+        {
+            service: 'roles',
+            nameAs: 'roles',
+            parentField: '_id',
+            childField: 'userId',
+            asArray: true,
+            query: {
+                $limit: 5,
+                $select: ['role']
+            }
         }
     ]
 };
@@ -27,12 +38,12 @@ exports.before = {
         auth.verifyToken(),
         auth.populateUser(),
         auth.restrictToAuthenticated(),
-        globalHooks.adminOrOwner()
+        globalHooks.adminOrOwnedBy()
     ],
     get: [
         auth.verifyToken(),
         auth.populateUser(),
-        auth.restrictToAuthenticated(),
+        auth.restrictToAuthenticated()
         //auth.restrictToOwner({ ownerField: '_id' })
     ],
     create: [
@@ -43,7 +54,8 @@ exports.before = {
         auth.populateUser(),
         auth.restrictToAuthenticated(),
         auth.hashPassword(),
-        globalHooks.adminOrOwner()
+        globalHooks.adminOrOwnedBy(),
+        hooksCommon.dePopulate()
         //auth.restrictToOwner({ ownerField: '_id' })
     ],
     patch: [
@@ -51,14 +63,15 @@ exports.before = {
         auth.populateUser(),
         auth.restrictToAuthenticated(),
         auth.hashPassword(),
-        globalHooks.adminOrOwner()
+        globalHooks.adminOrOwnedBy(),
+        hooksCommon.dePopulate()
         //auth.restrictToOwner({ ownerField: '_id' })
     ],
     remove: [
         auth.verifyToken(),
         auth.populateUser(),
         auth.restrictToAuthenticated(),
-        globalHooks.adminOrOwner()
+        globalHooks.adminOrOwnedBy()
         //auth.restrictToOwner({ ownerField: '_id' })
     ]
 };

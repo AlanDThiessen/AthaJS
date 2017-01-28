@@ -1,5 +1,7 @@
 <h1>Account</h1>
 
+<p ng-style="account.msgStyle">{{account.message}}</p>
+
 <div class="pure-g">
     <div class="pure-u-1 pageSection">
         <h3>Email</h3>
@@ -19,6 +21,14 @@
                 <input type="password" placeholder="Confirm New Password" ng-model="account.changePass.confirmPassword">
                 <button class="pure-button" ng-click="account.updateAccount()" ng-if="account.function != 'create'">Update Account</button>
                 <span ng-if="account.error != ''" class="errorMsg">{{account.error}}</span>
+            </fieldset>
+        </form>
+        <h3>Roles</h3>
+        <form class="pure-form">
+            <span>{{account.account.roles}}</span>
+            <fieldset>
+                <input type="text" placeholder="Add Role" ng-model="account.newRole">
+                <button class="pure-button" ng-click="account.addRole()">Add Role</button>
             </fieldset>
         </form>
     </div>

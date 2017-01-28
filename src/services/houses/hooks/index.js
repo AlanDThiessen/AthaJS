@@ -11,19 +11,19 @@ exports.before = {
         auth.restrictToAuthenticated()
     ],
     find: [
-        globalHooks.adminOrOwner()
+        globalHooks.adminOrOwnedBy()
     ],
     get: [
-        globalHooks.adminOrOwner()
+        globalHooks.adminOrOwnedBy()
     ],
     create: [
         auth.associateCurrentUser()
     ],
     update: [
-        globalHooks.adminOrOwner()
+        globalHooks.adminOrOwnedBy()
     ],
     patch: [
-        globalHooks.adminOrOwner()
+        globalHooks.adminOrOwnedBy()
     ],
     remove: [
         auth.restrictToOwner({ ownerField: 'userId' })
