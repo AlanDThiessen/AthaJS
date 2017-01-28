@@ -23,21 +23,25 @@
                 <span ng-if="account.error != ''" class="errorMsg">{{account.error}}</span>
             </fieldset>
         </form>
-
-        <div ng-if="account.isAdmin">
-        <h3>Roles</h3>
-            <form class="pure-form">
-                <ul>
-                    <li ng-repeat="(key, role) in account.account.roles | orderBy: 'role'">{{role.role}}</li>
-                </ul>
-                <fieldset>
-                    <input type="text" placeholder="Add Role" ng-model="account.newRole">
-                    <button class="pure-button" ng-click="account.addRole()">Add Role</button>
-                </fieldset>
-            </form>
-        </div>
     </div>
 </div>
+
+
+<div class="pure-g" ng-if="account.isAdmin">
+    <div class="pure-u-1 pageSection">
+        <h3>Roles</h3>
+        <form class="pure-form">
+            <ul>
+                <li ng-repeat="(key, role) in account.account.roles | orderBy: 'role'">{{role.role}}</li>
+            </ul>
+            <fieldset>
+                <input type="text" placeholder="Add Role" ng-model="account.newRole">
+                <button class="pure-button" ng-click="account.addRole()">Add Role</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
 
 <div class="pure-g">
     <div class="pure-u-1 pageSection">
