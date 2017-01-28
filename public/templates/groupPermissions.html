@@ -1,2 +1,22 @@
 <h1>Group Permissions</h1>
 
+<table class="pure-table">
+    <thead>
+    <tr>
+        <th>Device</th>
+        <th>Can View</th>
+        <th>Can Change</th>
+    </tr>
+    </thead>
+    <tr ng-repeat="device in groupPerms.devices">
+        <td>
+            {{device.name}}
+        </td>
+        <td>
+            <input type="checkbox" ng-checked="device.read" ng-click="groupPerms.permClicked(device._id, 'read')">
+        </td>
+        <td>
+            <input type="checkbox" ng-checked="device.update" ng-click="groupPerms.permClicked(device._id, 'update')">
+        </td>
+    </tr>
+</table>

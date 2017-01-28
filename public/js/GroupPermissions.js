@@ -33,18 +33,33 @@
     GroupPermissionsCtrl.$inject = ['$scope', '$stateParams', 'FeathersJS'];
     function GroupPermissionsCtrl($scope, $stateParams, feathersSvc) {
         var groupCtrl = this;
+        groupCtrl.permClicked = PermissionClicked;
         var houseId = $stateParams['houseId'];
         var groupId = $stateParams['groupId'];
         var devicesSvc = feathersSvc.getService('devices');
         var permissionsSvc = feathersSvc.getService('permissions');
         var user = feathersSvc.getUser();
-        var devices = {};
-        var permissions = {};
+        groupCtrl.devices = [];
+        var permissions = [];
 
-        GetDevicesForHouse();
-        GetPermissionsForGroup();
+        Start();
 
         return groupCtrl;
+
+
+        function Start() {
+            $scope.$on('$destroy', Unsubscribe);
+            permissionsSvc.on('created', OnPermissionsCreated);
+            permissionsSvc.on('removed', OnPermissionsRemoved);
+            GetDevicesForHouse();
+            GetPermissionsForGroup();
+        }
+
+
+        function Unsubscribe() {
+            permissionsSvc.off('created', OnPermissionsCreated);
+            permissionsSvc.off('removed', OnPermissionsRemoved);
+        }
 
 
         function GetDevicesForHouse() {
@@ -69,20 +84,117 @@
 
 
         function OnDevicesRetrieved(data) {
-            devices = {};
+            groupCtrl.devices = [];
 
             data.data.forEach(function(device) {
-                devices[device.id] = device;
+                device.read = false;
+                device.update = false;
+                groupCtrl.devices.push(device);
             });
+
+            CrossReferenceGroupPermissions();
         }
 
 
         function OnPermissionsRetrieved(data) {
-            permissions = {};
+            permissions = [];
 
             data.data.forEach(function(perm) {
-                permissions[perm.id] = perm;
+                permissions.push(perm);
             });
+
+            CrossReferenceGroupPermissions();
+        }
+
+
+
+        function OnPermissionsCreated(perm) {
+            if(perm.ownerId == groupId) {
+                permissions.push(perm);
+                CrossReferenceGroupPermissions();
+            }
+        }
+
+
+        function OnPermissionsRemoved(perm) {
+            var index = permissions.findIndex(function(thisPerm) {
+                if(thisPerm._id == perm._id) {
+                    return true;
+                }
+            });
+
+            if(index != -1) {
+                permissions.splice(index, 1);
+                CrossReferenceGroupPermissions();
+            }
+        }
+
+
+        function CrossReferenceGroupPermissions() {
+            var currentDeviceId;
+            var currentFunction;
+
+            groupCtrl.devices.forEach(function(device) {
+                currentDeviceId = device._id;
+
+                ['read', 'update'].forEach(function(perm) {
+                    currentFunction = perm;
+
+                    if (permissions.findIndex(SearchPermissions) != -1) {
+                        device[perm] = true;
+                    }
+                    else {
+                        device[perm] = false;
+                    }
+                });
+            });
+
+            $scope.$apply();
+
+            /**
+             * @param element
+             * @returns {boolean}
+             */
+            function SearchPermissions(element) {
+                var found = false;
+
+                if ((element.itemId == currentDeviceId) && (element.function == currentFunction)) {
+                    found = true;
+                }
+
+                return found;
+            }
+        }
+
+
+        function PermissionClicked(deviceId, perm) {
+            var device = groupCtrl.devices.find(function(device) {
+                return device._id == deviceId;
+            });
+
+
+            if(device != -1) {
+                device[perm] = !device[perm];
+
+                if(device[perm]) {
+                    permissionsSvc.create({
+                        'itemId': device._id,
+                        'ownerId': groupId,
+                        'function': perm
+                    }).then(null, OnError);
+                }
+                else {
+                    var index = permissions.findIndex(function(thisPerm) {
+                        if(thisPerm.itemId == deviceId) {
+                            return true;
+                        }
+                    });
+
+                    if(index != -1) {
+                        permissionsSvc.remove(permissions[index]._id).then(null, OnError);
+                    }
+                }
+            }
         }
 
 
