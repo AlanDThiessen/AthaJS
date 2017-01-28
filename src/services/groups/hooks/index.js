@@ -10,14 +10,24 @@ exports.before = {
         auth.populateUser(),
         auth.restrictToAuthenticated()
     ],
-    find: [],
-    get: [],
+    find: [
+        globalHooks.adminOrOwnedBy()
+    ],
+    get: [
+        globalHooks.adminOrOwnedBy()
+    ],
     create: [
         auth.associateCurrentUser()
     ],
-    update: [],
-    patch: [],
-    remove: []
+    update: [
+        globalHooks.adminOrOwnedBy()
+    ],
+    patch: [
+        globalHooks.adminOrOwnedBy()
+    ],
+    remove: [
+        globalHooks.adminOrOwnedBy()
+    ]
 };
 
 exports.after = {
