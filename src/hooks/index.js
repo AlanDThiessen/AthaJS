@@ -32,7 +32,7 @@ exports.adminOnly = function(options) {
  * @returns {boolean}
  */
 function SearchUserRoleAdmin(element) {
-    if (element.role == 'admin') {
+    if(element.role == 'admin') {
         return true;
     }
     else {

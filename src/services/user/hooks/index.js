@@ -56,7 +56,6 @@ exports.before = {
         auth.hashPassword(),
         globalHooks.adminOrOwnedBy(),
         hooksCommon.dePopulate()
-        //auth.restrictToOwner({ ownerField: '_id' })
     ],
     patch: [
         auth.verifyToken(),
@@ -65,14 +64,12 @@ exports.before = {
         auth.hashPassword(),
         globalHooks.adminOrOwnedBy(),
         hooksCommon.dePopulate()
-        //auth.restrictToOwner({ ownerField: '_id' })
     ],
     remove: [
         auth.verifyToken(),
         auth.populateUser(),
         auth.restrictToAuthenticated(),
         globalHooks.adminOrOwnedBy()
-        //auth.restrictToOwner({ ownerField: '_id' })
     ]
 };
 

@@ -52,6 +52,7 @@
         accountCtrl.newRole = '';
         accountCtrl.function = '';
         accountCtrl.account = {};
+        accountCtrl.isAdmin = false;
 
         var usersSvc = feathersSvc.getService('users');
         var rolesSvc = feathersSvc.getService('roles');
@@ -87,6 +88,10 @@
 
 
         function Start() {
+            if(thisUser.roles.findIndex(SearchUserRoleAdmin) != -1) {
+                accountCtrl.isAdmin = true;
+            }
+
             $scope.$on('$destroy', Unsubscribe);
             usersSvc.on('updated', OnAccountUpdated);
         }
@@ -198,6 +203,20 @@
         }
 
 
+        /**
+         * @param element
+         * @returns {boolean}
+         */
+        function SearchUserRoleAdmin(element) {
+            if(element.role == 'admin') {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+
         function AddRole() {
             if(accountCtrl.newRole != '') {
                 rolesSvc.create({
@@ -212,6 +231,7 @@
 
         function RoleAdded(data) {
             accountCtrl.account.roles.push(data.role);
+            $scope.$apply();
         }
 
 
