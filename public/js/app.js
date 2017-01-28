@@ -101,7 +101,9 @@ angular.module('Atha', ['ui.router', 'FeathersJS'])
                         controllerAs: 'zones'
                     },
                     'houseDevices@home.houseDetails': {
-                        templateUrl: 'templates/devices.html'
+                        templateUrl: 'templates/devices.html',
+                        controller: 'DevicesCtrl',
+                        controllerAs: 'devices'
                     }
                 }
             })

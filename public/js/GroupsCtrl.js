@@ -43,6 +43,7 @@
 
         var query = {
             $sort: {
+                $limit: 100,
                 'name': 1
             }
         };
@@ -74,7 +75,6 @@
 
         function GetGroups() {
             groupsSvc.find({
-                $limit: 100,
                 'query': query
             }).then(OnGroupsUpdate, OnError);
         }

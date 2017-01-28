@@ -1,1 +1,31 @@
 <h1>Devices</h1>
+
+<form class="pure-form">
+    <fieldset>
+        <input type="text" placeholder="Device Name" ng-model="devices.newDeviceName">
+        <button class="pure-button" ng-click="devices.new()" ng-disabled="devices.newDeviceName == ''">Create</button>
+    </fieldset>
+</form>
+<table class="pure-table pure-table-bordered">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Zone</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tr ng-repeat="(key, device) in devices.devices">
+        <td>{{device.name}}</td>
+        <td>{{device.zoneId}}</td>
+        <td>
+            <button type="button">
+                <i class="material-icons">edit</i>
+            </button>
+            <button type="button" ng-click="devices.remove(device._id)">
+                <i class="material-icons">delete</i>
+            </button>
+        </td>
+    </tr>
+    <caption>Total: {{devices.devices.length}}</caption>
+</table>
+
