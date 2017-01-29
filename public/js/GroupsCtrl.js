@@ -43,8 +43,8 @@
         var houseId = $stateParams.houseId;
 
         var query = {
+            $limit: 100,
             $sort: {
-                $limit: 100,
                 'name': 1
             }
         };

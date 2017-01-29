@@ -41,7 +41,12 @@
         var user = feathersSvc.getUser();
         var houseId = $stateParams.houseId;
 
-        var query = {};
+        var query = {
+            $limit: 20,
+            $sort: {
+                'name': 1
+            }
+        };
 
         if(typeof(houseId) != 'undefined') {
             query.houseId = houseId;
@@ -70,7 +75,6 @@
 
         function GetZones() {
             zoneSvc.find({
-                $limit: 100,
                 'query': query
             }).then(OnZonesUpdate, OnError);
         }

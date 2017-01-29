@@ -47,7 +47,7 @@
 
         var query = {
             $limit: 100,
-                $sort: {
+            $sort: {
                 'name': 1
             }
         };
