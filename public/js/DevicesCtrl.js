@@ -35,10 +35,13 @@
         var devicesCtrl = this;
         devicesCtrl.newDeviceName = '';
         devicesCtrl.devices = {};
+        devicesCtrl.zones = [];
         devicesCtrl.new = CreateDevice;
         devicesCtrl.edit = EditDevice;
         devicesCtrl.remove = RemoveDevice;
+        devicesCtrl.selectZone = DeviceZoneSelected;
         var devicesSvc = feathersSvc.getService('devices');
+        var zonesSvc = feathersSvc.getService('zones');
         var user = feathersSvc.getUser();
         var houseId = $stateParams.houseId;
 
@@ -59,6 +62,9 @@
             devicesSvc.on('created', OnDeviceCreated);
             devicesSvc.on('updated', OnDeviceUpdated);
             devicesSvc.on('removed', OnDeviceRemoved);
+            zonesSvc.on('created', OnZoneCreated);
+            zonesSvc.on('removed', OnZoneRemoved);
+            GetZones();
             GetDevices();
         }
 
@@ -67,6 +73,8 @@
             devicesSvc.off('created', OnDeviceCreated);
             devicesSvc.off('updated', OnDeviceUpdated);
             devicesSvc.off('removed', OnDeviceRemoved);
+            zonesSvc.off('created', OnZoneCreated);
+            zonesSvc.off('removed', OnZoneRemoved);
         }
 
 
@@ -81,11 +89,37 @@
         }
 
 
+        function GetZones() {
+            if(typeof(houseId) != 'undefiend') {
+                query['houseId'] = houseId;
+            }
+
+            zonesSvc.find({
+                'query': query
+            }).then(OnZonesUpdate, OnError);
+        }
+
+
         function OnDevicesUpdate(data) {
             devicesCtrl.devices = {};
 
             data.data.forEach(function(device) {
+                if(typeof(device.zoneId) == 'undefined') {
+                    device.zoneId = null;
+                }
+
                 devicesCtrl.devices[device._id] = device;
+            });
+
+            $scope.$apply();
+        }
+
+
+        function OnZonesUpdate(data) {
+            devicesCtrl.zones = [];
+
+            data.data.forEach(function(zone) {
+                devicesCtrl.zones.push(zone);
             });
 
             $scope.$apply();
@@ -138,6 +172,59 @@
             $state.go('home.houseDevices', {
                 'deviceId': deviceId
             });
+        }
+
+
+        function UpdateDeviceZone(deviceId) {
+            var updateDevice = {
+                'zoneId': devicesCtrl.devices[deviceId].zoneId
+            };
+
+            devicesSvc.patch(deviceId, updateDevice).then(OnDeviceUpdated, OnError);
+        }
+
+
+        function OnZoneCreated(zone) {
+            if(zone.houseId == houseId) {
+                devicesCtrl.zones.push(zone);
+                $scope.$apply();
+            }
+        }
+
+
+        function OnZoneRemoved(zone) {
+            var index = devicesCtrl.zones.findIndex(function(zoneIt) {
+                if(zoneIt._id == zone._id) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+
+            if(index != -1) {
+                devicesCtrl.zones.splice(index, 1);
+                RemoveZoneFromDevices(zone._id);
+            }
+        }
+
+
+        function RemoveZoneFromDevices(zoneId) {
+            for(var deviceId in devicesCtrl.devices) {
+                if(devicesCtrl.devices.hasOwnProperty(deviceId)) {
+                    if(devicesCtrl.devices[deviceId].zoneId == zoneId) {
+                        devicesCtrl.devices[deviceId].zonId = null;
+                        UpdateDeviceZone(deviceId);
+                    }
+                }
+            }
+
+            $scope.$apply();
+        }
+
+
+        function DeviceZoneSelected(deviceId) {
+            UpdateDeviceZone(deviceId);
         }
 
 

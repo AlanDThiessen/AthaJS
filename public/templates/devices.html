@@ -16,7 +16,15 @@
     </thead>
     <tr ng-repeat="(key, device) in devices.devices">
         <td>{{device.name}}</td>
-        <td>{{device.zoneId}}</td>
+        <td>
+            <span class="nullable">
+                <select ng-model="device.zoneId"
+                        ng-options="zone._id as zone.name for zone in devices.zones"
+                        ng-change="devices.selectZone(device._id)">
+                    <option value="">Select Zone</option>
+                </select>
+            </span>
+        </td>
         <td>
             <button type="button">
                 <i class="material-icons">edit</i>
