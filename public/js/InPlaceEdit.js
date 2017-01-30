@@ -28,47 +28,40 @@
     'use strict';
 
     angular.module('Atha')
-        .controller('HouseDetailsCtrl', HouseDetailsCtrl);
+        .directive('inPlaceEdit', InPlaceEditor);
 
-    HouseDetailsCtrl.$inject = ['$scope', '$stateParams', 'FeathersJS'];
-    function HouseDetailsCtrl($scope, $stateParams, feathersSvc) {
-        var houseCtrl = this;
-        houseCtrl.house = {};
-        houseCtrl.renameHouse = SaveHouseName;
-        var houseId = $stateParams['houseId'];
-        var houseSvc = feathersSvc.getService('houses');
-        var user = feathersSvc.getUser();
+    function InPlaceEditor() {
+        return {
+            restrict: 'E',
+            scope: {
+                placeholder: '@placeholder',
+                saveValue: '&onSave',
+                currentValue: '=inValue'
+            },
+            link: function($scope, elem, attrs) {
+                var oldValue = '';
 
-        GetHouse();
+                $scope.editorEnabled = false;
 
-        return houseCtrl;
+                $scope.enableEditor = function() {
+                    oldValue = $scope.currentValue;
+                    $scope.newValue = $scope.currentValue;
+                    $scope.editorEnabled = true;
+                };
 
-        function GetHouse() {
-            houseSvc.get(houseId).then(OnHouseUpdated, OnError);
-        }
+                $scope.save = function() {
+                    $scope.saveValue({'newValue': $scope.newValue});
+                    $scope.currentValue = $scope.newValue;
+                    $scope.editorEnabled = false;
+                };
 
-
-        function OnHouseUpdated(house) {
-            if(house._id == houseId) {
-                houseCtrl.house = house;
-                $scope.$apply();
-            }
-        }
-
-
-        function SaveHouseName(newValue) {
-            var updateObj = {
-                'name': newValue
-            };
-
-            houseSvc.patch(houseId, updateObj).then(OnHouseUpdated, OnError);
-        }
-
-
-        function OnError(error) {
-            console.log(error);
-        }
+                $scope.cancel = function() {
+                    $scope.currentValue = oldValue;
+                    $scope.editorEnabled = false;
+                }
+            },
+            templateUrl: 'templates/inPlaceEdit.html'
+        };
     }
-
 
 })();

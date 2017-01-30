@@ -1,5 +1,6 @@
 <h1>House Details</h1>
-<h2>{{house.house.name}}</h2>
+
+<in-place-edit placeholder="House Name" in-value="house.house.name" on-save="house.renameHouse(newValue)"></in-place-edit>
 
 <div>
     <div class="pure-g pageSection">

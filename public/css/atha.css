@@ -42,3 +42,10 @@ body {
     color: red;
     font-style: italic;
 }
+
+.inPlaceEdit {
+    font-weight: bold;
+    font-size: x-large;
+    border: 1px solid lightblue;
+    padding: 3px;
+}

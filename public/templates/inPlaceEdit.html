@@ -1,0 +1,12 @@
+<div ng-show="editorEnabled">
+    <form class="pure-form">
+        <fieldset>
+            <input type="text" placeholder="{{placeholder}}" ng-model="newValue">
+            <button class="pure-button" ng-click="save()" ng-disabled="newValue == ''">Save</button>
+            <button class="pure-button" ng-click="cancel()">Cancel</button>
+        </fieldset>
+    </form>
+</div>
+<div ng-hide="editorEnabled">
+    <span ng-click="enableEditor()" class="inPlaceEdit" title="Click to Edit">{{currentValue}}</span>
+</div>
