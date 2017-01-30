@@ -40,6 +40,7 @@
         devicesCtrl.edit = EditDevice;
         devicesCtrl.remove = RemoveDevice;
         devicesCtrl.selectZone = DeviceZoneSelected;
+        devicesCtrl.saveDeviceName = SaveDeviceName;
         var devicesSvc = feathersSvc.getService('devices');
         var zonesSvc = feathersSvc.getService('zones');
         var user = feathersSvc.getUser();
@@ -225,6 +226,13 @@
 
         function DeviceZoneSelected(deviceId) {
             UpdateDeviceZone(deviceId);
+        }
+
+
+        function SaveDeviceName(newValue, id) {
+            devicesSvc.patch(id, {
+                'name': newValue
+            }).then(OnDeviceUpdated, OnError);
         }
 
 

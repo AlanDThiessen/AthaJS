@@ -15,7 +15,9 @@
     </tr>
     </thead>
     <tr ng-repeat="(key, device) in devices.devices">
-        <td>{{device.name}}</td>
+        <td>
+            <in-place-edit placeholder="Device Name" edit-id="device._id" in-value="device.name" on-save="devices.saveDeviceName(newValue, id)"></in-place-edit>
+        </td>
         <td>
             <span class="nullable">
                 <select ng-model="device.zoneId"
