@@ -38,6 +38,7 @@
         groupCtrl.new = CreateGroup;
         groupCtrl.edit = EditGroup;
         groupCtrl.remove = RemoveGroup;
+        groupCtrl.saveGroupName = SaveGroupName;
         var groupsSvc = feathersSvc.getService('groups');
         var user = feathersSvc.getUser();
         var houseId = $stateParams.houseId;
@@ -141,6 +142,13 @@
 
         function RemoveGroup(groupId) {
             groupsSvc.remove(groupId).then(null, OnError);
+        }
+
+
+        function SaveGroupName(newValue, id) {
+            groupsSvc.patch(id, {
+                'name': newValue
+            }).then(OnGroupUpdated, OnError);
         }
 
 

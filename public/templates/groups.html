@@ -14,7 +14,9 @@
     </tr>
     </thead>
     <tr ng-repeat="(key, group) in groups.groups">
-        <td>{{group.name}}</td>
+        <td>
+            <in-place-edit placeholder="Group Name" edit-id="group._id" in-value="group.name" on-save="groups.saveGroupName(newValue, id)"></in-place-edit>
+        </td>
         <td>
             <button type="button">
                 <i class="material-icons" ng-click="groups.edit(group._id)">edit</i>

@@ -18,9 +18,6 @@
             <in-place-edit placeholder="Zone Name" edit-id="zone._id" in-value="zone.name" on-save="zones.saveZoneName(newValue, id)"></in-place-edit>
         </td>
         <td>
-            <button type="button">
-                <i class="material-icons">edit</i>
-            </button>
             <button type="button" ng-click="zones.remove(zone._id)">
                 <i class="material-icons">delete</i>
             </button>
