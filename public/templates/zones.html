@@ -14,7 +14,9 @@
     </tr>
     </thead>
     <tr ng-repeat="(key, zone) in zones.zones">
-        <td>{{zone.name}}</td>
+        <td>
+            <in-place-edit placeholder="Zone Name" edit-id="zone._id" in-value="zone.name" on-save="zones.saveZoneName(newValue, id)"></in-place-edit>
+        </td>
         <td>
             <button type="button">
                 <i class="material-icons">edit</i>

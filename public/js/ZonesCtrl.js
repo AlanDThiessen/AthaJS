@@ -37,6 +37,7 @@
         zoneCtrl.zones = {};
         zoneCtrl.new = CreateZone;
         zoneCtrl.remove = RemoveZone;
+        zoneCtrl.saveZoneName = SaveZoneName;
         var zoneSvc = feathersSvc.getService('zones');
         var user = feathersSvc.getUser();
         var houseId = $stateParams.houseId;
@@ -134,6 +135,12 @@
             zoneSvc.remove(zoneId).then(null, OnError);
         }
 
+
+        function SaveZoneName(newValue, id) {
+            zoneSvc.patch(id, {
+                'name': newValue
+            }).then(OnZoneUpdated, OnError);
+        }
 
         function OnError(err) {
             console.log(err);
