@@ -4,6 +4,7 @@
     <thead>
     <tr>
         <th>Device</th>
+        <th>Zone</th>
         <th>Can View</th>
         <th>Can Change</th>
     </tr>
@@ -13,9 +14,12 @@
             {{device.name}}
         </td>
         <td>
+            {{groupPerms.zones[device.zoneId]}}
+        </td>
+        <td style="text-align: center;">
             <input type="checkbox" ng-checked="device.read" ng-click="groupPerms.permClicked(device._id, 'read')">
         </td>
-        <td>
+        <td style="text-align: center;">
             <input type="checkbox" ng-checked="device.update" ng-click="groupPerms.permClicked(device._id, 'update')">
         </td>
     </tr>

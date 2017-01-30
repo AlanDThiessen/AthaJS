@@ -37,9 +37,11 @@
         var houseId = $stateParams['houseId'];
         var groupId = $stateParams['groupId'];
         var devicesSvc = feathersSvc.getService('devices');
+        var zonesSvc = feathersSvc.getService('zones');
         var permissionsSvc = feathersSvc.getService('permissions');
         var user = feathersSvc.getUser();
         groupCtrl.devices = [];
+        groupCtrl.zones = {};
         var permissions = [];
 
         Start();
@@ -51,6 +53,7 @@
             $scope.$on('$destroy', Unsubscribe);
             permissionsSvc.on('created', OnPermissionsCreated);
             permissionsSvc.on('removed', OnPermissionsRemoved);
+            GetZones();
             GetDevicesForHouse();
             GetPermissionsForGroup();
         }
@@ -67,7 +70,7 @@
                 query: {
                     $limit: 20,
                     'houseId': houseId,
-                    $select: ['name']
+                    $select: ['name', 'zoneId']
                 }
             }).then(OnDevicesRetrieved, OnError);
         }
@@ -80,6 +83,16 @@
                     'ownerId': groupId
                 }
             }).then(OnPermissionsRetrieved, OnError);
+        }
+
+
+        function GetZones() {
+            zonesSvc.find({
+                query: {
+                    $limit: 20,
+                    'houseId': houseId
+                }
+            }).then(OnZonesUpdate, OnError);
         }
 
 
@@ -106,6 +119,16 @@
             CrossReferenceGroupPermissions();
         }
 
+
+        function OnZonesUpdate(data) {
+            groupCtrl.zones = {};
+
+            data.data.forEach(function(zone) {
+                groupCtrl.zones[zone._id] = zone.name;
+            });
+
+            $scope.$apply();
+        }
 
 
         function OnPermissionsCreated(perm) {
