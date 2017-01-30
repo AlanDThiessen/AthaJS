@@ -36,6 +36,7 @@
             scope: {
                 placeholder: '@placeholder',
                 saveValue: '&onSave',
+                editId: '=',
                 currentValue: '=inValue'
             },
             link: function($scope, elem, attrs) {
@@ -50,7 +51,15 @@
                 };
 
                 $scope.save = function() {
-                    $scope.saveValue({'newValue': $scope.newValue});
+                    var saveParams = {
+                        'newValue': $scope.newValue
+                    };
+
+                    if(typeof($scope.editId) != 'undefined') {
+                        saveParams.id = $scope.editId;
+                    }
+
+                    $scope.saveValue(saveParams);
                     $scope.currentValue = $scope.newValue;
                     $scope.editorEnabled = false;
                 };

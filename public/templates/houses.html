@@ -14,7 +14,9 @@
         </tr>
     </thead>
     <tr ng-repeat="(key, house) in houses.houses">
-        <td>{{house.name}}</td>
+        <td>
+            <in-place-edit placeholder="House Name" edit-id="house._id" in-value="house.name" on-save="houses.saveHouseName(newValue, id)"></in-place-edit>
+        </td>
         <td>
             <button type="button">
                 <i class="material-icons" ng-click="houses.edit(house._id)">edit</i>

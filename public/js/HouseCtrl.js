@@ -38,6 +38,7 @@
         houseCtrl.new = CreateHouse;
         houseCtrl.edit = EditHouse;
         houseCtrl.remove = RemoveHouse;
+        houseCtrl.saveHouseName = SaveHouseName;
         var houseSvc = feathersSvc.getService('houses');
         var user = feathersSvc.getUser();
 
@@ -125,6 +126,13 @@
             $state.go('home.houseDetails', {
                 'houseId': houseId
             });
+        }
+
+
+        function SaveHouseName(newValue, id) {
+            houseSvc.patch(id, {
+                'name': newValue
+            }).then(OnHouseUpdated, OnError);
         }
 
 

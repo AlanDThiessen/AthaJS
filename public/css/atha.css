@@ -44,8 +44,6 @@ body {
 }
 
 .inPlaceEdit {
-    font-weight: bold;
-    font-size: x-large;
     border: 1px solid lightblue;
-    padding: 3px;
+    padding: 0.5em;
 }
