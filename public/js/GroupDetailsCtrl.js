@@ -34,18 +34,26 @@
     function GroupDetailsCtrl($scope, $stateParams, feathersSvc) {
         var groupCtrl = this;
         groupCtrl.group = {};
+        groupCtrl.saveGroupName = SaveGroupName;
         var houseId = $stateParams['houseId'];
         var groupId = $stateParams['groupId'];
         var groupsSvc = feathersSvc.getService('groups');
 
-        groupsSvc.get(groupId).then(OnGroupRerieved, OnError);
+        groupsSvc.get(groupId).then(OnGroupUpdated, OnError);
 
         return groupCtrl;
 
 
-        function OnGroupRerieved(group) {
+        function OnGroupUpdated(group) {
             groupCtrl.group = group;
             $scope.$apply();
+        }
+
+
+        function SaveGroupName(newValue) {
+            groupsSvc.patch(groupId, {
+                'name': newValue
+            }).then(OnGroupUpdated, OnError);
         }
 
 

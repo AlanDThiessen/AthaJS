@@ -1,5 +1,6 @@
 <h1>Group Details</h1>
-<h2>{{group.group.name}}</h2>
+
+<in-place-edit placeholder="Group Name" in-value="group.group.name" on-save="group.saveGroupName(newValue)"></in-place-edit>
 
 <div>
     <div class="pure-g">
