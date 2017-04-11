@@ -13,7 +13,15 @@ AthaJS provides the primary server as well as the web client for managing the ho
 - Home Onwers define whether members of a group can view and/or change individual devices in the house.
 - Users automatically see only the houses, zones, devices, etc. to which they have access.
 
-## Structure (aka Feathers Services)
+## File Structure
+
+- src/ - The main server code resides in the source directory.  This is structured based on FeathersJS.
+- config/ - Application configuration settings for the FeathersJS app.
+- public/ - The Web-based application served by the application when a browser connects.  This is an AngularJS and Feathers Client application.
+- test/ - Unit tests should reside here...maybe eventually?
+
+
+## Data Structure (aka Feathers Services)
 
 ### Authentication
 This is the authentication service provided by FeathersJS.
