@@ -3,7 +3,7 @@ AthaJS is a cloud-based framework for complete home automation built using [Feat
 
 Atha allows "Home Owners" to define houses with zones (e.g. "Living Room", "Upstairs", "Back Yard") and add controlled devices to each zone.  Home owners can create users and groups, setting permissions for which user/group can view and control the various devices.
 
-AthaJS provides the primary server as well as the web client for managing the homes.  [AthaMobile](https://github.com/AlanDThiessen/AthaMobile) is the mobile application for controlling the various devices.
+AthaJS provides the primary server as well as the web client for managing the homes.  [AthaMobile](https://github.com/AlanDThiessen/AthaMobile) is the mobile application for controlling the various devices.  Other FeathersJS-based clients can be easily added.
 
 ## Usage
 
@@ -37,8 +37,8 @@ Houses provide the primary, top-level containment of groups, zones, and devices.
 | Field | Description |
 |-------|:-------------|
 | _id | The unique identifier for this House |
-| userId | The user id corresponding to the creator/owner of this house |
-| name | The name of the house |
+| userId | The user id corresponding to the creator/owner of this House |
+| name | The name of the House |
 
 
 ### Roles
@@ -47,7 +47,7 @@ Roles is a service for giving users various types of roles (currently "Admin" an
 | Field |Description |
 |-------|:-------------|
 | _id | The unique identifier for of the Role |
-| userId | The id of the user which which to associate this role |
+| userId | The id of the user with which to associate this role |
 | role | A string representing the role (used in hooks) |
 
 
