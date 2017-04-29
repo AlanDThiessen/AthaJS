@@ -5,9 +5,21 @@ const hooks = require('feathers-hooks');
 const hooksCommon = require('feathers-hooks-common');
 const auth = require('feathers-authentication').hooks;
 
-const schema = {
+/***
+ *
+ * Schema for data population when a user is queried
+ * This schema is used to populate additional information along
+ * with the user.
+ *
+ */
+const userGroupsRolesSchema = {
     include: [
         {
+            /**
+             * Search the groupUsers service for this user's userId
+             * and populate an array called "groups" with all of the
+             * group ids returned by the service.
+             */
             service: 'groupUsers',
             nameAs: 'groups',
             parentField: '_id',
@@ -18,6 +30,11 @@ const schema = {
             }
         },
         {
+            /**
+             * Search the roles service for this user's userId
+             * and populate an array called "roles" with all of the
+             * roles returned by the service.
+             */
             service: 'roles',
             nameAs: 'roles',
             parentField: '_id',
@@ -78,10 +95,10 @@ exports.after = {
         hooks.remove('password')
     ],
     find: [
-        hooksCommon.populate( { schema } )
+        hooksCommon.populate( { schema: userGroupsRolesSchema } )
     ],
     get: [
-        hooksCommon.populate( { schema } )
+        hooksCommon.populate( { schema: userGroupsRolesSchema } )
     ],
     create: [
     ],
